@@ -1,0 +1,181 @@
+{
+  "app": {
+    "title": "SleepLink - A Deep Sleep Experience Without Loneliness"
+  },
+  "landing": {
+    "hero": {
+      "title": "Say Goodbye to Lonely Insomnia, Welcome Warm Companionship",
+      "subtitle": "SleepLink ensures you never feel alone when falling asleep, with safe and pure voice companionship, everyone can enjoy the comfort of being guarded.",
+      "cta": {
+        "primary": "Join the Waiting List",
+        "secondary": "Explore Features"
+      },
+      "users": "Over 2,500+ users have joined the waiting list"
+    },
+    "problem": {
+      "title": "Still Troubled by Lonely Insomnia? You're Not Alone!",
+      "description": "Every night, over 30% of people experience difficulty falling asleep. Tossing and turning not only wastes time but also lowers your mood. Modern society's fast pace immerses us in stress, while lacking that sense of security when falling asleep."
+    },
+    "solution": {
+      "title": "SleepLink Brings You a Revolutionary Sleep Companion Experience",
+      "description": "Our voice companionship system designed for insomniacs lets you feel a real presence and warmth, while ensuring 100% safety and privacy."
+    },
+    "painpoint": {
+      "one": {
+        "title": "Insomnia and Loneliness",
+        "description": "Research shows that 91% of insomniacs report intense feelings of loneliness, especially before falling asleep. This feeling leads to increased anxiety levels, further deteriorating sleep quality."
+      },
+      "two": {
+        "title": "Safety and Connection Needs",
+        "description": "84% of users wish to hear a real human voice before sleep, but also worry about safety and privacy issues. Existing social apps often fail to provide a safe voice interaction environment."
+      },
+      "three": {
+        "title": "Inappropriate Content Issues",
+        "description": "In traditional voice social platforms, 78% of users have encountered inappropriate content, causing many to step back, unable to get the companionship they need."
+      },
+      "four": {
+        "title": "AI Sleep Companions Lack Authenticity",
+        "description": "Although AI solutions are becoming increasingly popular, 67% of users report that AI voices lack real warmth and cannot provide the comfort that comes from human emotional connection."
+      }
+    },
+    "features": {
+      "title": "How SleepLink Helps You Enjoy Peace of Mind Sleep",
+      "subtitle": "Our carefully designed sleep companion experience focuses on three core elements: real companionship feeling, safety and purity, and personalized resonance",
+      "one": {
+        "badge": "Core Feature",
+        "title": "Safe Matching System",
+        "description": "Triple identity authentication ensures each user is strictly screened, AI voice firewall monitors inappropriate content in real-time, allowing you to connect with real people with complete peace of mind."
+      },
+      "two": {
+        "badge": "Unique Experience",
+        "title": "De-gendered Virtual Symbiotic Cabin",
+        "description": "Through abstracted biological forms and neutral voice technology, gender associations are eliminated, returning social interaction to the purest emotional connection and accompaniment."
+      },
+      "three": {
+        "badge": "Innovative Feature",
+        "title": "Voice Capsule Bank",
+        "description": "Not suitable for real-time voice chat? Extract certified comforting voices from the Sound Drift Project, or contribute your voice to help others, establishing a mutually assistive voice community."
+      },
+      "cta": "View All Feature Demos"
+    },
+    "value": {
+      "title": "SleepLink - A Deep Resonance Haven for Insomniacs",
+      "subtitle": "We are committed to creating a night-time sleep companion space that provides both real human voice warmth and 100% safety and purity, helping users reduce falling asleep time by an average of 40%",
+      "one": {
+        "title": "Safety First",
+        "description": "Every user is screened through a multi-verification system, combined with real-time AI monitoring, allowing you to feel safe even in your most vulnerable moments at night. Our users report that after using SleepLink, pre-sleep anxiety reduced by 68%."
+      },
+      "two": {
+        "title": "Real Yet Pure Connection",
+        "description": "Unique de-gendered interaction design eliminates the ambiguous factors in traditional voice social interactions, retaining the most essential human connection. Our core value is to return companionship to its purest form, with 89% of test users stating this is their favorite feature."
+      },
+      "three": {
+        "title": "Bio-data Driven Personalization",
+        "description": "Our unique smart ring synchronizes your biological data such as heart rate and breathing frequency, adjusting interaction modes in real-time based on your physical state. According to tests, this has improved sleep satisfaction by 74%."
+      },
+      "four": {
+        "title": "Pressure-Free Social Experience",
+        "description": "The \"Sleep Escape Pod Protocol\" allows you to gracefully exit at any time, without feeling social pressure or guilt. 92% of users believe this design greatly lowers the usage threshold."
+      },
+      "stats": {
+        "title": "SleepLink Effectiveness Data",
+        "one": "Falling Asleep Time",
+        "two": "Sleep Quality",
+        "three": "Night Anxiety",
+        "four": "User Recommendation Rate"
+      }
+    },
+    "testimonials": {
+      "title": "The Common Choice of Over 2,500 Users",
+      "subtitle": "Hear what users who have experienced SleepLink have to say",
+      "one": {
+        "name": "Chen Meiqi",
+        "title": "Chronic Insomniac",
+        "quote": "As a long-term insomnia patient, I've tried countless methods. SleepLink is the first solution that truly makes me feel at ease. The feeling of having someone by your side, yet without any pressure, is very unique. Most importantly, I no longer worry about encountering inappropriate content and can completely relax."
+      },
+      "two": {
+        "name": "Li Wei",
+        "title": "IT Engineer",
+        "quote": "I've tried finding voice partners on other social apps in the past, but often encountered uncomfortable situations. SleepLink has completely changed this. Its de-gendered design allows me to focus on what truly matters: relaxation and sleep. The voice capsule feature is especially great, allowing me to receive companionship anytime."
+      },
+      "three": {
+        "name": "Zhang Xiaohua",
+        "title": "Psychological Counselor",
+        "quote": "As a psychological counselor, I often recommend SleepLink to my insomnia patients. This app accurately captures the key connection between sleep and interpersonal connection, while addressing safety concerns. I particularly like its task-oriented ice-breaking design, which allows my patients to establish connections more naturally."
+      },
+      "partners": {
+        "title": "Industry Recognition"
+      },
+      "cta": "Join the Early Access List"
+    },
+    "howItWorks": {
+      "title": "Easy to Use, Three Steps to Peaceful Sleep",
+      "subtitle": "SleepLink's design is concise and intuitive, allowing you to enjoy high-quality sleep companion experience without complicated operations",
+      "step1": {
+        "title": "Create a Secure Account",
+        "description": "Complete basic authentication (phone number + voice print) or deep authentication (add facial recognition), select your favorite interest tags, and set up a personalized virtual image."
+      },
+      "step2": {
+        "title": "Choose Interaction Mode",
+        "description": "Options include real-time matching (connecting with real people/AI), voice capsules (asynchronous voice companionship), or meditation guide (guided relaxation experience)."
+      },
+      "step3": {
+        "title": "Enjoy Peaceful Sleep",
+        "description": "Place your phone at your bedside, the smart ring will automatically track your sleep state, and the system adjusts interaction intensity based on your biological rhythm until you fall soundly asleep."
+      }
+    },
+    "betaPrice": {
+      "title": "Early Access Beta Version Limited Time Offer",
+      "description": "Completely free during the beta testing period, with a 50% permanent discount when the official version is released",
+      "cta": "Secure Your Beta Spot"
+    },
+    "screenshots": {
+      "title": "Preview - SleepLink Interface Display",
+      "subtitle": "Explore SleepLink's meticulously designed interface, experience cosmic-level sleep companionship",
+      "tab1": "Matching Page",
+      "tab2": "Virtual Symbiotic Cabin",
+      "tab3": "Personal Profile",
+      "tab4": "Voice Capsules",
+      "cta": "Experience the Full App Demo"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Learn more about how SleepLink helps you achieve a better sleep experience",
+      "q1": "How does SleepLink ensure user safety and content purity?",
+      "a1": "SleepLink employs a triple security mechanism: 1) Multi-level identity verification, including phone number, voice print, and optional facial recognition; 2) AI voice firewall monitors inappropriate content in real-time, automatically intervening in suspicious behavior; 3) De-gendered social design fundamentally reduces the possibility of inappropriate interactions. Additionally, users can activate the \"Meteorite Shield\" function to report content at any time, and the system will immediately process and isolate suspicious users.",
+      "q2": "Do I need to purchase a smart ring to use SleepLink?",
+      "a2": "No, the smart ring is an optional enhancement accessory. SleepLink's basic functions can be completed using just your phone, including matching, voice calls, and voice capsules as core functions. The smart ring provides more precise biological data collection, making matching and interaction more personalized, but this is completely optional high-end experience. We offer smart rings at various price points and also support compatibility with some mainstream smart watches and health bands.",
+      "q3": "Is SleepLink a dating app? How is misuse prevented?",
+      "a3": "SleepLink is clearly positioned as a sleep aid application, not a social or dating platform. We take multiple measures to ensure this positioning: 1) Users need to sign a sleep covenant when registering, clarifying the purpose of use; 2) Virtual image system and de-gendered design reduce the influence of appearance factors; 3) Task-oriented interaction replaces free chat, maintaining the purposefulness of interaction; 4) Violations will affect the user's \"purity index,\" and serious offenders will be permanently banned from using the service.",
+      "q4": "How is SleepLink different from ASMR or white noise apps on the market?",
+      "a4": "Traditional ASMR and white noise apps provide pre-recorded one-way content, while SleepLink creates a two-way interactive experience. Through real human connection or highly personalized AI, SleepLink simulates real human companionship feeling, solving the pre-sleep loneliness problem. Our system adjusts in real-time based on your bio-feedback, for example, when detecting your irregular breathing, it will automatically adjust content rhythm to help you calm down. Additionally, task-oriented ice-breaking and de-gendered design are our original features.",
+      "q5": "How much does a SleepLink subscription cost? Is there a free version?",
+      "a5": "SleepLink offers both free and premium versions. The free version includes basic matching functions and limited AI sleep companion duration, enough to experience the core value. Premium subscription (28 yuan monthly/228 yuan annually) unlocks unlimited AI sleep companionship, priority real person matching, advanced voice capsules, and more interactive tasks. Currently in the beta testing phase, all features are completely free, and beta users will receive a 50% permanent discount privilege when officially released."
+    },
+    "waitingList": {
+      "title": "Get Early Beta Access, Win at the Starting Line!",
+      "subtitle": "Join SleepLink's exclusive beta waiting list to get beta invitation codes, limited benefits, and exclusive discounts first! Limited spots, join now!",
+      "email": "Your Email Address",
+      "name": "Your Name (Optional)",
+      "submit": "Join the Waiting List Now",
+      "privacy": "We value your privacy, your information will not be shared with any third parties.",
+      "perk1": {
+        "title": "Beta Exclusive Benefits",
+        "description": "50% Permanent Discount on Official Version"
+      },
+      "perk2": {
+        "title": "Direct Feedback Channel",
+        "description": "Influence Future Product Development"
+      },
+      "perk3": {
+        "title": "Founding User Badge",
+        "description": "Exclusive Avatar Frame and Virtual Gifts"
+      }
+    },
+    "videos": {
+      "title": "Real User Cases - See How SleepLink Changes Sleep Experience",
+      "subtitle": "Learn about real users' sleep quality changes before and after using SleepLink",
+      "video1": {
+        "title": "SleepLink Feature Demo - Understand Core Functions in One Minute",
+        "description": "
+

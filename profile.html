@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 个人配置</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+        
+        .profile-header {
+            background: linear-gradient(to right, #4c1d95, #1e40af);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-value {
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, #9F7AEA, #76A9FA);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #9F7AEA;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-auto">
+        <!-- 个人资料头部 -->
+        <div class="profile-header px-5 pt-10 pb-5">
+            <div class="flex items-center mb-5">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-20 h-20 rounded-full border-4 border-indigo-900">
+                <div class="ml-4">
+                    <h1 class="text-2xl font-bold">鲸落-23</h1>
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-green-400 mr-1"></i>
+                        <span class="text-sm text-green-400">纯净认证用户</span>
+                    </div>
+                    <div class="mt-1 text-indigo-200 text-sm">已加入 32 天</div>
+                </div>
+            </div>
+            
+            <!-- 纯净指数 -->
+            <div class="mb-5">
+                <div class="flex justify-between mb-1">
+                    <span class="text-sm">纯净指数</span>
+                    <span class="text-sm font-bold">98/100</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-value" style="width: 98%"></div>
+                </div>
+            </div>
+            
+            <!-- 徽章栏 -->
+            <div class="flex space-x-2">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center">
+                    <i class="fas fa-moon text-xs"></i>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+                    <i class="fas fa-star text-xs"></i>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                    <i class="fas fa-award text-xs"></i>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                    <i class="fas fa-plus text-xs"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 虚拟形象设置 -->
+        <div class="p-5 border-b border-indigo-900">
+            <h2 class="text-lg font-bold mb-4">虚拟形象设置</h2>
+            <div class="flex items-center">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center mr-4">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-12 h-12">
+                        <path fill="#ffffff" d="M41.9,-47.4C54.6,-33.9,65.2,-19.2,68.2,-2.9C71.2,13.4,66.5,31.2,54.9,41.6C43.3,52,24.7,55,6.3,58.7C-12.1,62.5,-30.1,67,-46.8,60.5C-63.4,54.1,-78.7,36.8,-82.3,17.3C-85.9,-2.2,-77.7,-23.9,-64.6,-38.7C-51.4,-53.6,-33.3,-61.6,-17,-62.4C-0.8,-63.2,29.2,-61,41.9,-47.4Z" transform="translate(100 100)" />
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold">水母精灵</h3>
+                    <p class="text-indigo-300 text-sm">
+                        您当前的虚拟形象，会随呼吸频率变化
+                    </p>
+                </div>
+                <button class="bg-indigo-600 rounded-lg px-3 py-1 text-sm">
+                    更换
+                </button>
+            </div>
+        </div>
+        
+        <!-- 声音设置 -->
+        <div class="p-5 border-b border-indigo-900">
+            <h2 class="text-lg font-bold mb-4">声音设置</h2>
+            
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <div>
+                        <h3 class="font-bold">声纹变化器</h3>
+                        <p class="text-indigo-300 text-sm">使用中性化声纹，隐藏性别特征</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <span class="text-sm">音高</span>
+                    <span class="text-sm font-semibold">中性 (180Hz)</span>
+                </div>
+                <input type="range" class="w-full mt-1" min="0" max="100" value="50">
+            </div>
+            
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <div>
+                        <h3 class="font-bold">背景环境音</h3>
+                        <p class="text-indigo-300 text-sm">混合环境声，提升真实感</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-2 mt-2">
+                    <div class="bg-opacity-10 bg-white rounded-lg py-2 px-3 text-center text-sm">
+                        <i class="fas fa-cloud-rain mb-1"></i>
+                        <div>雨声</div>
+                    </div>
+                    <div class="bg-opacity-10 bg-white rounded-lg py-2 px-3 text-center text-sm border border-purple-500">
+                        <i class="fas fa-wind mb-1"></i>
+                        <div>海浪</div>
+                    </div>
+                    <div class="bg-opacity-10 bg-white rounded-lg py-2 px-3 text-center text-sm">
+                        <i class="fas fa-fire mb-1"></i>
+                        <div>篝火</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 隐私与安全 -->
+        <div class="p-5 border-b border-indigo-900">
+            <h2 class="text-lg font-bold mb-4">隐私与安全</h2>
+            
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold">AI声纹防火墙</h3>
+                        <p class="text-indigo-300 text-sm">自动过滤不当内容</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold">匹配限制</h3>
+                        <p class="text-indigo-300 text-sm">仅匹配深度认证用户</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold">自动拒绝连麦申请</h3>
+                        <p class="text-indigo-300 text-sm">纯净指数低于90的用户</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold">数据同步</h3>
+                        <p class="text-indigo-300 text-sm">与智能戒指同步生物数据</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <button class="w-full mt-5 py-2 rounded-lg bg-red-900 bg-opacity-30 text-red-400 flex items-center justify-center">
+                <i class="fas fa-user-shield mr-2"></i> 管理已屏蔽用户
+            </button>
+        </div>
+        
+        <!-- 其他设置 -->
+        <div class="p-5 mb-20">
+            <h2 class="text-lg font-bold mb-4">其他设置</h2>
+            
+            <div class="space-y-4">
+                <a href="sleep-report.html" class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-moon text-white text-sm"></i>
+                        </div>
+                        <span>睡眠记录</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-indigo-400"></i>
+                </a>
+                
+                <a href="#" class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-cog text-white text-sm"></i>
+                        </div>
+                        <span>应用设置</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-indigo-400"></i>
+                </a>
+                
+                <a href="#" class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-question-circle text-white text-sm"></i>
+                        </div>
+                        <span>帮助与反馈</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-indigo-400"></i>
+                </a>
+                
+                <a href="#" class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-heart text-white text-sm"></i>
+                        </div>
+                        <span>关于SleepLink</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-indigo-400"></i>
+                </a>
+            </div>
+            
+            <button class="w-full mt-8 py-2 rounded-lg bg-white bg-opacity-10 text-indigo-400">
+                退出登录
+            </button>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="community.html" class="flex flex-col items-center">
+            <i class="fas fa-users text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">社区</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-purple-500"></i>
+            <span class="text-xs mt-1 text-purple-500 font-semibold">我的</span>
+        </a>
+    </div>
+</body>
+</html>

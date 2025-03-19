@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 匹配界面</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(159, 122, 234, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(159, 122, 234, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(159, 122, 234, 0); }
+        }
+        
+        @keyframes wave {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .waveform {
+            display: flex;
+            align-items: center;
+            height: 30px;
+        }
+        
+        .waveform-bar {
+            width: 3px;
+            background-color: #9F7AEA;
+            margin: 0 1px;
+            border-radius: 1px;
+        }
+        
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(159, 122, 234, 0.3);
+            transform: scale(0);
+            animation: ripple 2s linear infinite;
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #9F7AEA;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            background-color: #f56565;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg" id="stars-container"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-auto p-5" id="app-container">
+        <!-- 顶部导航 -->
+        <div class="flex justify-between items-center mb-6">
+            <button onclick="goBack()" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-arrow-left text-indigo-300"></i>
+            </button>
+            <h1 class="text-xl font-bold">寻找伴睡伙伴</h1>
+            <button onclick="location.href='match-preferences.html'" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-sliders-h text-indigo-300"></i>
+            </button>
+        </div>
+        
+        <!-- 匹配中状态 -->
+        <div id="matching-state" class="flex-1 flex flex-col items-center justify-center text-center">
+            <div class="relative mb-10">
+                <div class="w-32 h-32 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center">
+                    <i class="fas fa-user-astronaut text-white text-4xl"></i>
+                </div>
+                <div class="ripple w-32 h-32"></div>
+                <div class="ripple w-32 h-32" style="animation-delay: 0.5s"></div>
+                <div class="ripple w-32 h-32" style="animation-delay: 1s"></div>
+            </div>
+            
+            <h2 class="text-2xl font-bold mb-3">正在寻找合适的伴睡伙伴</h2>
+            <p class="text-indigo-300 mb-6">AI正在分析您的兴趣标签和睡眠习惯，匹配最适合的对象</p>
+            
+            <div class="waveform mb-8">
+                <div class="waveform-bar h-4" style="animation: wave 1.3s infinite; animation-delay: 0.1s"></div>
+                <div class="waveform-bar h-8" style="animation: wave 1.5s infinite; animation-delay: 0.2s"></div>
+                <div class="waveform-bar h-12" style="animation: wave 1.7s infinite; animation-delay: 0.3s"></div>
+                <div class="waveform-bar h-16" style="animation: wave 1.9s infinite; animation-delay: 0.4s"></div>
+                <div class="waveform-bar h-20" style="animation: wave 2.1s infinite; animation-delay: 0.5s"></div>
+                <div class="waveform-bar h-16" style="animation: wave 1.9s infinite; animation-delay: 0.6s"></div>
+                <div class="waveform-bar h-12" style="animation: wave 1.7s infinite; animation-delay: 0.7s"></div>
+                <div class="waveform-bar h-8" style="animation: wave 1.5s infinite; animation-delay: 0.8s"></div>
+                <div class="waveform-bar h-4" style="animation: wave 1.3s infinite; animation-delay: 0.9s"></div>
+            </div>
+            
+            <div class="bg-opacity-10 bg-white rounded-lg p-4 mb-8">
+                <div class="flex items-center justify-center space-x-2 text-sm">
+                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
+                    <span>AI声纹防火墙已激活</span>
+                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
+                    <span>纯净模式开启</span>
+                </div>
+            </div>
+            
+            <button onclick="cancelMatching()" class="py-3 px-6 rounded-full bg-white bg-opacity-10 hover:bg-opacity-20 transition">
+                取消匹配
+            </button>
+        </div>
+        
+        <!-- 匹配成功状态 -->
+        <div id="match-found-state" class="hidden flex-1 flex flex-col items-center justify-center text-center">
+            <div class="mb-6 relative">
+                <svg class="w-32 h-32 mx-auto" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#9F7AEA" d="M41.9,-47.4C54.6,-33.9,65.2,-19.2,68.2,-2.9C71.2,13.4,66.5,31.2,54.9,41.6C43.3,52,24.7,55,6.3,58.7C-12.1,62.5,-30.1,67,-46.8,60.5C-63.4,54.1,-78.7,36.8,-82.3,17.3C-85.9,-2.2,-77.7,-23.9,-64.6,-38.7C-51.4,-53.6,-33.3,-61.6,-17,-62.4C-0.8,-63.2,29.2,-61,41.9,-47.4Z" transform="translate(100 100)" />
+                </svg>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center p-2">
+                        <div class="text-xl font-bold mb-1">匹配成功!</div>
+                        <div class="text-indigo-300 text-sm">共同兴趣: 深海白噪音、安静阅读</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex space-x-8 items-end mb-10">
+                <div class="text-center">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center mb-2">
+                        <i class="fas fa-user-astronaut text-white text-2xl"></i>
+                    </div>
+                    <div class="font-bold">鲸落-23</div>
+                    <div class="text-xs text-indigo-300">您的虚拟形象</div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center mb-2">
+                        <i class="fas fa-user-astronaut text-white text-2xl"></i>
+                    </div>
+                    <div class="font-bold">星沉-57</div>
+                    <div class="text-xs text-indigo-300">深度认证用户</div>
+                </div>
+            </div>
+            
+            <div class="bg-opacity-10 bg-indigo-900 rounded-xl p-5 mb-6 w-full">
+                <h3 class="font-bold mb-3">对方期望的睡前活动</h3>
+                <div class="flex space-x-2 mb-3">
+                    <div class="bg-purple-900 bg-opacity-40 px-3 py-1 rounded-full text-sm">
+                        安静阅读
+                    </div>
+                    <div class="bg-blue-900 bg-opacity-40 px-3 py-1 rounded-full text-sm">
+                        深海白噪音
+                    </div>
+                    <div class="bg-indigo-900 bg-opacity-40 px-3 py-1 rounded-full text-sm">
+                        轻音乐
+                    </div>
+                </div>
+                <div class="text-sm text-indigo-300">
+                    对方是一位喜欢安静的阅读者，希望在入睡前有安静的阅读环境和柔和的背景音乐。
+                </div>
+            </div>
+            
+            <div class="flex space-x-4">
+                <button onclick="rejectMatch()" class="w-14 h-14 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center">
+                    <i class="fas fa-times text-red-400 text-xl"></i>
+                </button>
+                
+                <button onclick="acceptMatch()" class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center pulse-animation">
+                    <i class="fas fa-check text-white text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 连接建立状态 -->
+        <div id="connected-state" class="hidden flex-1 flex flex-col">
+            <div class="bg-opacity-20 bg-indigo-900 rounded-2xl p-4 mb-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center mr-4">
+                        <i class="fas fa-user-astronaut text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center">
+                            <h2 class="font-bold">星沉-57</h2>
+                            <div class="bg-green-500 bg-opacity-20 text-green-400 text-xs px-2 py-1 rounded-full">
+                                已连接
+                            </div>
+                        </div>
+                        <div class="flex items-center text-xs text-indigo-300">
+                            <i class="fas fa-shield-alt text-green-400 mr-1"></i>
+                            <span>深度认证用户</span>
+                            <span class="mx-2">•</span>
+                            <span>纯净指数: 97/100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 任务进度 -->
+            <div class="bg-opacity-10 bg-white rounded-xl p-4 mb-6">
+                <h3 class="font-bold mb-3">共鸣任务: 深呼吸同步</h3>
+                <div class="mb-2 flex justify-between items-center">
+                    <span class="text-sm">完成进度</span>
+                    <span class="text-sm font-bold">36%</span>
+                </div>
+                <div class="h-2 bg-white bg-opacity-10 rounded-full">
+                    <div class="h-2 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full" style="width: 36%"></div>
+                </div>
+                <div class="mt-3 text-sm text-indigo-300">
+                    通过同步呼吸，帮助双方进入放松状态，
+                    <a href="task-completion.html" class="text-purple-400 underline">完成60%后将解锁对话功能</a>
+                </div>
+            </div>
+            
+            <!-- 聊天区域 -->
+            <div class="flex-1 bg-opacity-5 bg-white rounded-xl p-4 mb-4 overflow-y-auto">
+                <div class="text-center text-xs text-indigo-400 mb-4">
+                    聊天功能将在完成60%共鸣任务后解锁
+                </div>
+                
+                <!-- 系统消息 -->
+                <div class="flex justify-center mb-4">
+                    <div class="bg-opacity-10 bg-indigo-900 rounded-full px-4 py-1 text-xs text-indigo-300">
+                        匹配已成功建立，开始同步呼吸
+                    </div>
+                </div>
+                
+                <!-- 宇宙词云 -->
+                <div class="flex flex-wrap justify-center gap-2 mb-4">
+                    <div class="bg-opacity-10 bg-white rounded-full px-3 py-1 text-sm cursor-pointer hover:bg-opacity-20 transition">
+                        宇宙尘埃
+                    </div>
+                    <div class="bg-opacity-10 bg-white rounded-full px-3 py-1 text-sm cursor-pointer hover:bg-opacity-20 transition">
+                        量子泡沫
+                    </div>
+                    <div class="bg-opacity-10 bg-white rounded-full px-3 py-1 text-sm cursor-pointer hover:bg-opacity-20 transition">
+                        星际航行
+                    </div>
+                    <div class="bg-opacity-10 bg-white rounded-full px-3 py-1 text-sm cursor-pointer hover:bg-opacity-20 transition">
+                        深海压强
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 底部控制区 -->
+            <div class="flex items-center">
+                <button class="w-12 h-12 rounded-full bg-white bg-opacity-10 flex items-center justify-center mr-3">
+                    <i class="fas fa-wind text-indigo-300"></i>
+                </button>
+                
+                <div class="flex-1 bg-white bg-opacity-10 rounded-full px-5 py-3 flex items-center">
+                    <i class="fas fa-microphone-slash text-indigo-300 mr-3"></i>
+                    <span class="text-indigo-300">完成60%共鸣任务后解锁</span>
+                </div>
+                
+                <button class="w-12 h-12 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center ml-3">
+                    <i class="fas fa-phone-slash text-red-400"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="virtual-room.html" class="flex flex-col items-center">
+            <i class="fas fa-globe text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">虚拟舱</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+
+    <script>
+        // 创建随机星星
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.getElementById('stars-container');
+            
+            for(let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 随机位置
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                
+                // 随机大小
+                const size = Math.random() * 2 + 1;
+                
+                // 随机透明度
+                const opacity = Math.random() * 0.5 + 0.5;
+                
+                star.style.top = `${top}%`;
+                star.style.left = `${left}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.opacity = opacity;
+                
+                starsContainer.appendChild(star);
+            }
+            
+            // 匹配流程模拟
+            setTimeout(() => {
+                document.getElementById('matching-state').classList.add('hidden');
+                document.getElementById('match-found-state').classList.remove('hidden');
+            }, 5000);
+        });
+        
+        function goBack() {
+            window.location.href = 'home.html';
+        }
+        
+        function cancelMatching() {
+            window.location.href = 'home.html';
+        }
+        
+        function rejectMatch() {
+            document.getElementById('match-found-state').classList.add('hidden');
+            document.getElementById('matching-state').classList.remove('hidden');
+            
+            // 重新开始匹配流程
+            setTimeout(() => {
+                document.getElementById('matching-state').classList.add('hidden');
+                document.getElementById('match-found-state').classList.remove('hidden');
+            }, 3000);
+        }
+        
+        function acceptMatch() {
+            document.getElementById('match-found-state').classList.add('hidden');
+            document.getElementById('connected-state').classList.remove('hidden');
+            
+            // After a short delay, navigate to the virtual room for the shared breathing task
+            setTimeout(() => {
+                window.location.href = 'virtual-room.html';
+            }, 3000); // 3 seconds to show the connected state before moving to virtual room
+        }
+    </script>
+</body>
+</html>

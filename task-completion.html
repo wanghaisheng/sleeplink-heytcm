@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 共鸣任务完成</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        
+        .jellyfish {
+            filter: blur(1px);
+            opacity: 0.8;
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        .breath-indicator {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        
+        .waveform-animation {
+            animation: waveform 2s ease-in-out infinite;
+        }
+        
+        @keyframes waveform {
+            0%, 100% { height: 10px; }
+            25% { height: 20px; }
+            50% { height: 15px; }
+            75% { height: 25px; }
+        }
+        
+        .starry-bg {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #0A0F25, #0F1A3A);
+        }
+        
+        .keyword-bubble {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            margin: 5px;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .keyword-bubble:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Task completion specific styles */
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s;
+            stroke-width: 8;
+            stroke-dasharray: 300;
+            stroke-linecap: round;
+            fill: transparent;
+        }
+
+        .progress-ring-bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-ring-value {
+            stroke: #9F7AEA;
+        }
+
+        .star-particle {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-200px); opacity: 0; }
+        }
+
+        .celebration-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .constellation-line {
+            stroke: rgba(255, 255, 255, 0.6);
+            stroke-width: 1;
+            stroke-dasharray: 5;
+            stroke-dashoffset: 1000;
+            animation: draw-line 3s linear forwards;
+        }
+
+        @keyframes draw-line {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-hidden relative flex flex-col">
+        <!-- 顶部导航 -->
+        <div class="p-5 flex justify-between items-center bg-opacity-50 bg-black backdrop-filter backdrop-blur-md">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-user-astronaut text-white"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold">虚拟共生舱</h2>
+                    <div class="flex items-center">
+                        <div class="w-2 h-2 rounded-full bg-green-400 mr-1"></div>
+                        <span class="text-xs text-green-400">任务进行中 · 成功同步</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex space-x-3">
+                <button class="w-9 h-9 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-volume-up text-indigo-300 text-sm"></i>
+                </button>
+                <button class="w-9 h-9 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-ellipsis-v text-indigo-300 text-sm"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 任务完成主体 -->
+        <div class="flex-1 relative starry-bg flex flex-col items-center justify-center">
+            <div class="celebration-container" id="celebrationContainer"></div>
+            
+            <!-- 进度环 -->
+            <div class="relative mb-8">
+                <svg class="progress-ring w-48 h-48" id="progressRing">
+                    <circle class="progress-ring-circle progress-ring-bg" cx="96" cy="96" r="90"></circle>
+                    <circle class="progress-ring-circle progress-ring-value" id="progressRingValue" cx="96" cy="96" r="90" stroke-dashoffset="300"></circle>
+                </svg>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                    <h3 class="text-3xl font-bold" id="progressText">100%</h3>
+                    <p class="text-indigo-300">共鸣任务完成</p>
+                </div>
+            </div>
+            
+            <!-- 完成信息 -->
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold mb-2">恭喜！星图绘制圆满成功</h2>
+                <p class="text-indigo-300 mb-6">您与星沉-57成功建立了深度共鸣，自由聊天功能已解锁</p>
+                
+                <!-- 匹配信息 -->
+                <div class="flex justify-center space-x-10 mb-8">
+                    <div class="text-center">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center mb-2">
+                            <i class="fas fa-user-astronaut text-white text-xl"></i>
+                        </div>
+                        <div class="font-bold">鲸落-23</div>
+                    </div>
+                    <div class="flex items-center">
+                        <svg width="40" height="10">
+                            <line x1="0" y1="5" x2="40" y2="5" stroke="#9F7AEA" stroke-width="2" stroke-dasharray="4"></line>
+                        </svg>
+                        <div class="mx-2 w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center">
+                            <i class="fas fa-wifi text-white"></i>
+                        </div>
+                        <svg width="40" height="10">
+                            <line x1="0" y1="5" x2="40" y2="5" stroke="#9F7AEA" stroke-width="2" stroke-dasharray="4"></line>
+                        </svg>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center mb-2">
+                            <i class="fas fa-user-astronaut text-white text-xl"></i>
+                        </div>
+                        <div class="font-bold">星沉-57</div>
+                    </div>
+                </div>
+                
+                <!-- 任务统计 -->
+                <div class="bg-black bg-opacity-30 backdrop-filter backdrop-blur-md rounded-xl p-4 mb-6 max-w-xs mx-auto">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-indigo-300">共鸣呼吸次数</span>
+                        <span class="font-bold">86次</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-indigo-300">同步率</span>
+                        <span class="font-bold">94%</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-indigo-300">共鸣时长</span>
+                        <span class="font-bold">12分36秒</span>
+                    </div>
+                </div>
+                
+                <!-- 新解锁功能 -->
+                <div class="text-center mb-8">
+                    <h3 class="text-lg font-bold mb-2">新功能解锁</h3>
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <div class="bg-purple-900 bg-opacity-40 px-4 py-2 rounded-full text-sm inline-flex items-center">
+                            <i class="fas fa-comment-alt mr-2"></i>自由对话
+                        </div>
+                        <div class="bg-indigo-900 bg-opacity-40 px-4 py-2 rounded-full text-sm inline-flex items-center">
+                            <i class="fas fa-share-alt mr-2"></i>话题探索
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-40 px-4 py-2 rounded-full text-sm inline-flex items-center">
+                            <i class="fas fa-microphone mr-2"></i>声音共创
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 继续按钮 -->
+            <button onclick="continueToChatRoom()" class="cta-button py-3 px-8 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-lg shadow-lg flex items-center justify-center mb-6 hover:opacity-90 transition">
+                <i class="fas fa-rocket mr-2"></i> 进入自由聊天模式
+            </button>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="virtual-room.html" class="flex flex-col items-center">
+            <i class="fas fa-globe text-purple-500"></i>
+            <span class="text-xs mt-1 text-purple-500 font-semibold">虚拟舱</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate the progress ring
+            animateProgressRing();
+            
+            // Create the celebration effect
+            createStarParticles();
+            
+            // Create the constellation connection
+            drawConstellation();
+        });
+        
+        function animateProgressRing() {
+            const progressRingValue = document.getElementById('progressRingValue');
+            const progressText = document.getElementById('progressText');
+            const circumference = 2 * Math.PI * 90;
+            
+            progressRingValue.style.strokeDasharray = circumference;
+            
+            // Simulate progress animation from 0 to 100%
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 1;
+                const offset = circumference - (progress / 100) * circumference;
+                progressRingValue.style.strokeDashoffset = offset;
+                progressText.textContent = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                }
+            }, 30);
+        }
+        
+        function createStarParticles() {
+            const container = document.getElementById('celebrationContainer');
+            
+            // Create star particles
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const star = document.createElement('div');
+                    star.className = 'star-particle';
+                    
+                    // Random position, size and color
+                    const size = Math.random() * 6 + 2;
+                    const left = Math.random() * 100;
+                    const delay = Math.random() * 2;
+                    const duration = Math.random() * 3 + 2;
+                    
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    star.style.left = `${left}%`;
+                    star.style.bottom = '0';
+                    star.style.boxShadow = `0 0 ${size}px ${size/2}px rgba(159, 122, 234, 0.8)`;
+                    star.style.animation = `float-up ${duration}s ease-out ${delay}s`;
+                    
+                    container.appendChild(star);
+                    
+                    // Remove the star after animation completes
+                    setTimeout(() => {
+                        container.removeChild(star);
+                    }, (duration + delay) * 1000);
+                }, i * 100);
+            }
+        }
+        
+        function drawConstellation() {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "100%");
+            svg.style.position = "absolute";
+            svg.style.top = "0";
+            svg.style.left = "0";
+            svg.style.pointerEvents = "none";
+            
+            // Create random constellation points
+            const points = [];
+            for (let i = 0; i < 12; i++) {
+                points.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight
+                });
+            }
+            
+            // Draw lines between points
+            for (let i = 0; i < points.length - 1; i++) {
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", points[i].x);
+                line.setAttribute("y1", points[i].y);
+                line.setAttribute("x2", points[i+1].x);
+                line.setAttribute("y2", points[i+1].y);
+                line.classList.add("constellation-line");
+                
+                svg.appendChild(line);
+            }
+            
+            document.getElementById('celebrationContainer').appendChild(svg);
+        }
+        
+        function continueToChatRoom() {
+            // Redirect to the chat room or update the UI state
+            window.location.href = 'virtual-room.html';
+        }
+    </script>
+</body>
+</html>

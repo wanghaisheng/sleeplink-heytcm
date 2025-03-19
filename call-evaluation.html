@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 伴睡评价</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+        
+        .star-rating {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .star-rating i {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .star-active {
+            color: #FBBF24;
+        }
+        
+        .star-inactive {
+            color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .tag-chip {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 14px;
+            margin: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tag-chip.selected {
+            background-color: rgba(159, 122, 234, 0.4);
+            border: 1px solid #9F7AEA;
+        }
+        
+        .floating-card {
+            animation: card-float 6s ease-in-out infinite;
+        }
+        
+        @keyframes card-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-auto p-5 flex flex-col items-center justify-center">
+        <div class="floating-card mb-8 w-full">
+            <svg class="w-32 h-32 mx-auto" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#9F7AEA" d="M41.9,-47.4C54.6,-33.9,65.2,-19.2,68.2,-2.9C71.2,13.4,66.5,31.2,54.9,41.6C43.3,52,24.7,55,6.3,58.7C-12.1,62.5,-30.1,67,-46.8,60.5C-63.4,54.1,-78.7,36.8,-82.3,17.3C-85.9,-2.2,-77.7,-23.9,-64.6,-38.7C-51.4,-53.6,-33.3,-61.6,-17,-62.4C-0.8,-63.2,29.2,-61,41.9,-47.4Z" transform="translate(100 100)" />
+            </svg>
+        </div>
+        
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold mb-2">您的伴睡体验如何？</h2>
+            <p class="text-indigo-300">为您与星沉-57的伴睡体验评分，帮助我们改进匹配质量</p>
+        </div>
+        
+        <!-- 评分部分 -->
+        <div class="w-full max-w-md bg-opacity-10 bg-white rounded-2xl p-6 mb-6">
+            <h3 class="font-bold mb-4 text-center">整体体验评分</h3>
+            
+            <div class="star-rating flex justify-center mb-6">
+                <i class="fas fa-star text-3xl star-inactive" data-rating="1" onclick="setRating(1)"></i>
+                <i class="fas fa-star text-3xl star-inactive" data-rating="2" onclick="setRating(2)"></i>
+                <i class="fas fa-star text-3xl star-inactive" data-rating="3" onclick="setRating(3)"></i>
+                <i class="fas fa-star text-3xl star-inactive" data-rating="4" onclick="setRating(4)"></i>
+                <i class="fas fa-star text-3xl star-inactive" data-rating="5" onclick="setRating(5)"></i>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold mb-3">声音氛围感</h4>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="tag-chip" onclick="toggleTag(this)">舒适放松</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">适合入睡</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">声音清晰</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">有背景噪音</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">音量适中</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">安静平和</div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold mb-3">互动体验</h4>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="tag-chip" onclick="toggleTag(this)">回应及时</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">共鸣感强</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">有安全感</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">氛围和谐</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">有助入眠</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">内容纯净</div>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-bold mb-3">建议与反馈 (选填)</h4>
+                <textarea class="w-full bg-opacity-10 bg-white border border-indigo-800 rounded-xl p-3 text-white focus:outline-none focus:border-purple-500 h-20" placeholder="分享您的体验或建议..."></textarea>
+            </div>
+        </div>
+        
+        <!-- 底部按钮 -->
+        <div class="flex space-x-4 w-full max-w-md mb-8">
+            <button onclick="submitAndReport()" class="flex-1 py-3 rounded-xl bg-red-500 bg-opacity-20 text-red-400 font-semibold flex items-center justify-center">
+                <i class="fas fa-flag mr-2"></i> 举报
+            </button>
+            <button onclick="submitFeedback()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold flex items-center justify-center">
+                <i class="fas fa-check mr-2"></i> 提交评价
+            </button>
+        </div>
+        
+        <!-- 匹配建议 -->
+        <div class="text-center mt-4 mb-10">
+            <div class="text-indigo-300 mb-1">下次想尝试其他类型的伴睡体验吗？</div>
+            <div class="flex flex-wrap justify-center gap-2">
+                <a href="ai-companion.html" class="text-purple-400 hover:text-purple-300 transition-colors">
+                    <i class="fas fa-robot mr-1"></i> 尝试AI伴睡
+                </a>
+                <a href="voice-capsule.html" class="text-purple-400 hover:text-purple-300 transition-colors">
+                    <i class="fas fa-capsules mr-1"></i> 浏览声音胶囊
+                </a>
+                <a href="meditation.html" class="text-purple-400 hover:text-purple-300 transition-colors">
+                    <i class="fas fa-spa mr-1"></i> 冥想体验
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="virtual-room.html" class="flex flex-col items-center">
+            <i class="fas fa-globe text-purple-500"></i>
+            <span class="text-xs mt-1 text-purple-500 font-semibold">虚拟舱</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+
+    <!-- 举报模态框 -->
+    <div id="reportModal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden">
+        <div class="bg-opacity-20 bg-indigo-900 rounded-2xl p-6 max-w-md w-full mx-4">
+            <h3 class="font-bold text-xl mb-4 text-center">举报不当行为</h3>
+            
+            <div class="mb-6">
+                <h4 class="font-bold mb-3">举报原因</h4>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="tag-chip" onclick="toggleTag(this)">不当内容</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">骚扰行为</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">违反社区规则</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">不适当话题</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">声音质量差</div>
+                    <div class="tag-chip" onclick="toggleTag(this)">其他问题</div>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-bold mb-2">详细描述 (选填)</h4>
+                <textarea class="w-full bg-opacity-10 bg-white border border-indigo-800 rounded-xl p-3 text-white focus:outline-none focus:border-purple-500 h-20" placeholder="请描述您遇到的具体问题..."></textarea>
+            </div>
+            
+            <div class="flex space-x-3">
+                <button onclick="closeReportModal()" class="flex-1 py-3 rounded-xl bg-white bg-opacity-10 text-indigo-300 font-semibold">
+                    取消
+                </button>
+                <button onclick="submitReport()" class="flex-1 py-3 rounded-xl bg-red-600 text-white font-semibold">
+                    提交举报
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentRating = 0;
+        
+        function setRating(rating) {
+            currentRating = rating;
+            const stars = document.querySelectorAll('.star-rating i');
+            
+            stars.forEach(star => {
+                const starRating = parseInt(star.getAttribute('data-rating'));
+                
+                if (starRating <= rating) {
+                    star.classList.remove('star-inactive');
+                    star.classList.add('star-active');
+                } else {
+                    star.classList.remove('star-active');
+                    star.classList.add('star-inactive');
+                }
+            });
+        }
+        
+        function toggleTag(element) {
+            element.classList.toggle('selected');
+        }
+        
+        function submitFeedback() {
+            if (currentRating === 0) {
+                showToast("请先为体验评分");
+                return;
+            }
+            
+            // 在实际应用中，这里会调用API来提交评价
+            showToast("评价已提交，感谢您的反馈！");
+            
+            // 延迟跳转回首页
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 1500);
+        }
+        
+        function submitAndReport() {
+            // 显示举报模态框
+            document.getElementById('reportModal').classList.remove('hidden');
+        }
+        
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.add('hidden');
+        }
+        
+        function submitReport() {
+            // 在实际应用中，这里会调用API来提交举报
+            closeReportModal();
+            showToast("举报已提交，我们将尽快处理");
+            
+            // 延迟跳转回首页
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 1500);
+        }
+        
+        // 显示提示消息
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm z-50';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 500);
+            }, 2000);
+        }
+        
+        // 为了防止模态框误触，添加点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('reportModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeReportModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

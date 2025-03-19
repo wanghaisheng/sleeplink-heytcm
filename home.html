@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 匹配页面</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #9F7AEA, #76A9FA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(159, 122, 234, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(159, 122, 234, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(159, 122, 234, 0); }
+        }
+        
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            background-color: #f56565;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg" id="stars-container"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-auto p-5">
+        <!-- 顶部导航 -->
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-10 h-10 rounded-full mr-3 border-2 border-purple-500">
+                <div>
+                    <h2 class="font-bold text-lg">鲸落-23</h2>
+                    <div class="flex items-center">
+                        <i class="fas fa-shield-alt text-green-400 mr-1 text-xs"></i>
+                        <span class="text-xs text-green-400">纯净认证用户</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex space-x-4">
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center relative">
+                    <i class="fas fa-bell text-indigo-300"></i>
+                    <div class="badge">3</div>
+                </button>
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-cog text-indigo-300"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 睡眠状态卡片 -->
+        <div class="bg-opacity-20 bg-indigo-900 rounded-2xl p-5 mb-6">
+            <h3 class="font-bold mb-3">今晚想要什么样的陪伴？</h3>
+            <div class="flex justify-between items-center">
+                <div class="text-3xl font-bold gradient-text">准备入睡模式</div>
+                <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center pulse-animation">
+                    <i class="fas fa-moon text-white text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-3 text-indigo-300 text-sm">
+                系统检测到您的睡眠习惯，预计在 <span class="font-bold text-white">22:30</span> 开始入睡
+            </div>
+        </div>
+        
+        <!-- 匹配选项 -->
+        <div class="mb-8">
+            <h3 class="font-bold mb-4 text-lg">选择陪伴方式</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <a href="match-interface.html" class="bg-opacity-10 bg-white rounded-xl p-4 cursor-pointer hover:bg-opacity-20 transition duration-300">
+                    <div class="flex items-center mb-2">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center mr-3">
+                            <i class="fas fa-user-friends text-white"></i>
+                        </div>
+                        <div class="font-bold">安全真人匹配</div>
+                    </div>
+                    <p class="text-indigo-300 text-xs">
+                        匹配经过多重认证的真人，享受纯净的语音陪伴
+                    </p>
+                </a>
+                
+                <a href="ai-companion.html" class="bg-opacity-10 bg-white rounded-xl p-4 cursor-pointer hover:bg-opacity-20 transition duration-300">
+                    <div class="flex items-center mb-2">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-teal-400 flex items-center justify-center mr-3">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        <div class="font-bold">AI伴睡助手</div>
+                    </div>
+                    <p class="text-indigo-300 text-xs">
+                        智能AI伴睡声音，根据您的呼吸频率实时调整
+                    </p>
+                </a>
+                
+                <a href="voice-capsule.html" class="bg-opacity-10 bg-white rounded-xl p-4 cursor-pointer hover:bg-opacity-20 transition duration-300">
+                    <div class="flex items-center mb-2">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-red-400 flex items-center justify-center mr-3">
+                            <i class="fas fa-capsules text-white"></i>
+                        </div>
+                        <div class="font-bold">声音胶囊库</div>
+                    </div>
+                    <p class="text-indigo-300 text-xs">
+                        收藏或发现经过审核的优质伴睡声音片段
+                    </p>
+                </a>
+                
+                <a href="meditation.html" class="bg-opacity-10 bg-white rounded-xl p-4 cursor-pointer hover:bg-opacity-20 transition duration-300">
+                    <div class="flex items-center mb-2">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center mr-3">
+                            <i class="fas fa-wind text-white"></i>
+                        </div>
+                        <div class="font-bold">冥想向导</div>
+                    </div>
+                    <p class="text-indigo-300 text-xs">
+                        引导式深度放松体验，帮助快速进入睡眠状态
+                    </p>
+                </a>
+            </div>
+            
+            <!-- 新增AI智能聊天入口 -->
+            <div class="mt-4">
+                <a href="ai-chat.html" class="bg-opacity-10 bg-white rounded-xl p-4 cursor-pointer hover:bg-opacity-20 transition duration-300 flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mr-3">
+                        <i class="fas fa-brain text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-bold">AI睡眠顾问</div>
+                        <p class="text-indigo-300 text-xs">
+                            解答睡眠问题，提供个性化改善建议，助您找到理想伴睡方式
+                        </p>
+                    </div>
+                    <i class="fas fa-chevron-right text-indigo-300"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- 安全匹配提示 -->
+        <div class="bg-opacity-10 bg-green-900 border border-green-800 rounded-xl p-4 mb-8">
+            <div class="flex items-start">
+                <i class="fas fa-shield-alt text-green-400 text-xl mr-3 mt-1"></i>
+                <div>
+                    <h4 class="font-bold mb-1">安全匹配系统已激活</h4>
+                    <p class="text-indigo-300 text-sm">
+                        所有互动受到AI声纹防火墙保护，检测到不当内容将自动干预。长按对方头像可激活陨石护盾进行举报。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 兴趣标签 -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg">您的兴趣标签</h3>
+                <button class="text-indigo-400 text-sm">
+                    <i class="fas fa-edit mr-1"></i> 编辑
+                </button>
+            </div>
+            
+            <div class="flex flex-wrap gap-2">
+                <div class="bg-purple-900 bg-opacity-40 px-3 py-1 rounded-full text-sm">
+                    ASMR爱好者
+                </div>
+                <div class="bg-blue-900 bg-opacity-40 px-3 py-1 rounded-full text-sm">
+                    深海白噪音
+                </div>
+                <div class="bg-indigo-900 bg-opacity-40 px-3 py-1 rounded-full text-sm">
+                    宇宙漫谈
+                </div>
+                <div class="bg-pink-900 bg-opacity-40 px-3 py-1 rounded-full text-sm">
+                    安静阅读
+                </div>
+                <div class="bg-teal-900 bg-opacity-40 px-3 py-1 rounded-full text-sm">
+                    轻音乐
+                </div>
+            </div>
+        </div>
+        
+        <!-- 今日推荐 -->
+        <div>
+            <h3 class="font-bold text-lg mb-4">今日推荐伴睡声音</h3>
+            
+            <div class="space-y-4">
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 flex items-center cursor-pointer hover:bg-opacity-20 transition duration-300">
+                    <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                        <img src="https://randomuser.me/api/portraits/women/75.jpg" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <div class="font-bold">雨声图书馆</div>
+                            <div class="text-xs text-indigo-400">4.9 <i class="fas fa-star text-yellow-400"></i></div>
+                        </div>
+                        <div class="text-xs text-indigo-300">
+                            书店环境音+轻柔朗读，已有2,300人喜欢
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 flex items-center cursor-pointer hover:bg-opacity-20 transition duration-300">
+                    <div class="w-12 h-12 rounded-full overflow-hidden mr-4 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+                        <i class="fas fa-robot text-white text-lg"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <div class="font-bold">深海呼吸冥想</div>
+                            <div class="text-xs text-indigo-400">4.8 <i class="fas fa-star text-yellow-400"></i></div>
+                        </div>
+                        <div class="text-xs text-indigo-300">
+                            AI引导海洋深度放松，配合呼吸节奏调整
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 flex items-center cursor-pointer hover:bg-opacity-20 transition duration-300">
+                    <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <div class="font-bold">城市雨声行走</div>
+                            <div class="text-xs text-indigo-400">4.7 <i class="fas fa-star text-yellow-400"></i></div>
+                        </div>
+                        <div class="text-xs text-indigo-300">
+                            城市雨夜漫步声音，伴随轻柔呼吸声
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-purple-500"></i>
+            <span class="text-xs mt-1 text-purple-500 font-semibold">首页</span>
+        </a>
+        <a href="community.html" class="flex flex-col items-center">
+            <i class="fas fa-users text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">社区</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+
+    <script>
+        // 创建随机星星
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.getElementById('stars-container');
+            
+            for(let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 随机位置
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                
+                // 随机大小
+                const size = Math.random() * 2 + 1;
+                
+                // 随机透明度
+                const opacity = Math.random() * 0.5 + 0.5;
+                
+                star.style.top = `${top}%`;
+                star.style.left = `${left}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.opacity = opacity;
+                
+                starsContainer.appendChild(star);
+            }
+        });
+    </script>
+</body>
+</html>

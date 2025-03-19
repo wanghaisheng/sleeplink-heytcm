@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 胶囊详情</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes wave {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .waveform {
+            display: flex;
+            align-items: center;
+            height: 30px;
+        }
+        
+        .waveform-bar {
+            width: 2px;
+            background-color: #9F7AEA;
+            margin: 0 1px;
+            border-radius: 1px;
+        }
+        
+        .active-waveform .waveform-bar {
+            animation-play-state: running !important;
+        }
+        
+        .paused-waveform .waveform-bar {
+            animation-play-state: paused !important;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(159, 122, 234, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(159, 122, 234, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(159, 122, 234, 0); }
+        }
+        
+        .comment-bubble {
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .comment-bubble::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: -8px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 8px 8px 8px 0;
+            border-color: transparent rgba(255, 255, 255, 0.1) transparent transparent;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-auto p-5">
+        <!-- 顶部导航 -->
+        <div class="flex justify-between items-center mb-6">
+            <button onclick="goBack()" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-arrow-left text-indigo-300"></i>
+            </button>
+            <h1 class="text-2xl font-bold">声音胶囊详情</h1>
+            <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-ellipsis-h text-indigo-300"></i>
+            </button>
+        </div>
+        
+        <!-- 胶囊详情卡片 -->
+        <div class="bg-opacity-10 bg-indigo-900 rounded-2xl p-5 mb-6">
+            <div class="flex">
+                <div class="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center mr-4">
+                    <i class="fas fa-mountain text-white text-xl"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <h2 class="text-xl font-bold">雪山深处</h2>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-heart text-red-400"></i>
+                            <span class="text-indigo-300 text-sm">1,245</span>
+                        </div>
+                    </div>
+                    <div class="text-indigo-300 text-sm mb-3">
+                        藏族歌手德吉 · 30分钟 · 雪山环境音+呼吸冥想声音
+                    </div>
+                    
+                    <!-- 标签 -->
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <div class="bg-purple-900 bg-opacity-40 px-3 py-1 rounded-full text-xs">
+                            自然环境
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-40 px-3 py-1 rounded-full text-xs">
+                            冥想引导
+                        </div>
+                        <div class="bg-indigo-900 bg-opacity-40 px-3 py-1 rounded-full text-xs">
+                            深度放松
+                        </div>
+                    </div>
+                    
+                    <!-- 波形图 -->
+                    <div id="waveformContainer" class="waveform mb-3 active-waveform">
+                        <div class="waveform-bar h-4" style="animation: wave 1.3s infinite; animation-delay: 0.1s"></div>
+                        <div class="waveform-bar h-6" style="animation: wave 1.5s infinite; animation-delay: 0.2s"></div>
+                        <div class="waveform-bar h-8" style="animation: wave 1.7s infinite; animation-delay: 0.3s"></div>
+                        <div class="waveform-bar h-12" style="animation: wave 1.9s infinite; animation-delay: 0.4s"></div>
+                        <div class="waveform-bar h-16" style="animation: wave 2.1s infinite; animation-delay: 0.5s"></div>
+                        <div class="waveform-bar h-12" style="animation: wave 1.9s infinite; animation-delay: 0.6s"></div>
+                        <div class="waveform-bar h-14" style="animation: wave 1.8s infinite; animation-delay: 0.7s"></div>
+                        <div class="waveform-bar h-10" style="animation: wave 1.7s infinite; animation-delay: 0.8s"></div>
+                        <div class="waveform-bar h-8" style="animation: wave 1.6s infinite; animation-delay: 0.9s"></div>
+                        <div class="waveform-bar h-12" style="animation: wave 1.5s infinite; animation-delay: 1.0s"></div>
+                        <div class="waveform-bar h-16" style="animation: wave 1.4s infinite; animation-delay: 1.1s"></div>
+                        <div class="waveform-bar h-12" style="animation: wave 1.3s infinite; animation-delay: 1.2s"></div>
+                        <div class="waveform-bar h-8" style="animation: wave 1.2s infinite; animation-delay: 1.3s"></div>
+                        <div class="waveform-bar h-10" style="animation: wave 1.1s infinite; animation-delay: 1.4s"></div>
+                        <div class="waveform-bar h-6" style="animation: wave 1.0s infinite; animation-delay: 1.5s"></div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div id="playerTime" class="text-indigo-300 text-xs">00:00 / 30:00</div>
+                        <div class="text-indigo-300 text-xs">已有3,456次播放</div>
+                    </div>
+                    
+                    <!-- 播放控制 -->
+                    <div class="flex justify-between mt-4">
+                        <div class="flex space-x-3">
+                            <button id="playButton" class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center">
+                                <i class="fas fa-play text-white"></i>
+                            </button>
+                            <button class="w-12 h-12 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                                <i class="fas fa-heart text-red-400"></i>
+                            </button>
+                            <button class="w-12 h-12 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                                <i class="fas fa-download text-indigo-300"></i>
+                            </button>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="w-12 h-12 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                                <i class="fas fa-share-alt text-indigo-300"></i>
+                            </button>
+                            <button class="w-12 h-12 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                                <i class="fas fa-comment text-indigo-300"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 创作者信息 -->
+        <div class="bg-opacity-10 bg-white rounded-2xl p-5 mb-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Creator" class="w-12 h-12 rounded-full mr-3">
+                    <div>
+                        <h3 class="font-bold">德吉</h3>
+                        <div class="text-indigo-300 text-xs">藏族声音治愈师 · 已发布32个胶囊</div>
+                    </div>
+                </div>
+                <button class="px-4 py-2 rounded-full bg-white bg-opacity-10 text-indigo-300 text-sm">
+                    关注
+                </button>
+            </div>
+            
+            <div class="mt-4 text-indigo-300 text-sm">
+                来自青藏高原的声音采集，记录了凌晨4点雪山环境的纯净之声，配合传统藏族冥想呼吸法，帮助听者快速进入深度放松状态。
+            </div>
+        </div>
+        
+        <!-- 睡眠统计 -->
+        <div class="bg-opacity-10 bg-white rounded-2xl p-5 mb-6">
+            <h3 class="font-bold mb-4">睡眠改善数据</h3>
+            
+            <div class="grid grid-cols-3 gap-4 mb-4">
+                <div class="text-center">
+                    <div class="text-2xl font-bold gradient-text">-42%</div>
+                    <div class="text-indigo-300 text-xs">入睡时间</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold gradient-text">+67%</div>
+                    <div class="text-indigo-300 text-xs">深度睡眠</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold gradient-text">95%</div>
+                    <div class="text-indigo-300 text-xs">推荐率</div>
+                </div>
+            </div>
+            
+            <div class="text-center text-indigo-300 text-xs">
+                基于1,753名用户的睡眠追踪数据
+            </div>
+        </div>
+        
+        <!-- 评论区 -->
+        <div class="mb-10">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold">评论 (32)</h3>
+                <button class="text-indigo-300 text-sm">
+                    最新
+                    <i class="fas fa-chevron-down ml-1"></i>
+                </button>
+            </div>
+            
+            <!-- 评论列表 -->
+            <div class="space-y-4">
+                <!-- 评论1 -->
+                <div class="flex">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-10 h-10 rounded-full mr-3 flex-shrink-0">
+                    <div class="flex-1">
+                        <div class="comment-bubble">
+                            <div class="flex justify-between mb-2">
+                                <div class="font-bold">风铃幽梦</div>
+                                <div class="text-indigo-300 text-xs">2天前</div>
+                            </div>
+                            <p class="text-indigo-200 text-sm mb-2">
+                                这个声音真的太棒了！听了几天，入睡速度明显提升，以前要辗转反侧一小时，现在15分钟就能入睡。雪山的环境音特别有代入感，仿佛置身高原。
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center text-indigo-300 text-xs">
+                                    <i class="fas fa-heart text-red-400 mr-1"></i>
+                                    <span>15</span>
+                                </div>
+                                <button class="text-indigo-300 text-xs">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 评论2 -->
+                <div class="flex">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-10 h-10 rounded-full mr-3 flex-shrink-0">
+                    <div class="flex-1">
+                        <div class="comment-bubble">
+                            <div class="flex justify-between mb-2">
+                                <div class="font-bold">星辰大海</div>
+                                <div class="text-indigo-300 text-xs">4天前</div>
+                            </div>
+                            <p class="text-indigo-200 text-sm mb-2">
+                                德吉的声音胶囊总是能引导我进入冥想状态，这次的雪山深处尤其出色。呼吸引导的节奏恰到好处，不会太快也不会太慢，非常适合深度放松。
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center text-indigo-300 text-xs">
+                                    <i class="fas fa-heart text-red-400 mr-1"></i>
+                                    <span>9</span>
+                                </div>
+                                <button class="text-indigo-300 text-xs">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 评论3 -->
+                <div class="flex">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User" class="w-10 h-10 rounded-full mr-3 flex-shrink-0">
+                    <div class="flex-1">
+                        <div class="comment-bubble">
+                            <div class="flex justify-between mb-2">
+                                <div class="font-bold">寂静如初</div>
+                                <div class="text-indigo-300 text-xs">1周前</div>
+                            </div>
+                            <p class="text-indigo-200 text-sm mb-2">
+                                作为一名失眠多年的冥想爱好者，我尝试过很多类似的声音胶囊，但这个雪山深处有一种独特的宁静感。雪的声音非常轻柔，却又能完全覆盖杂念。已经连续使用一周，睡眠质量有了显著提升！
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center text-indigo-300 text-xs">
+                                    <i class="fas fa-heart text-red-400 mr-1"></i>
+                                    <span>23</span>
+                                </div>
+                                <button class="text-indigo-300 text-xs">回复</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 查看更多按钮 -->
+            <button class="w-full py-3 mt-4 rounded-lg bg-white bg-opacity-10 text-indigo-300 text-sm">
+                查看更多评论
+            </button>
+        </div>
+        
+        <!-- 推荐胶囊 -->
+        <div class="mb-10">
+            <h3 class="font-bold mb-4">相似胶囊</h3>
+            
+            <div class="grid grid-cols-1 gap-4">
+                <!-- 推荐胶囊1 -->
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 flex items-center">
+                    <div class="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-water text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold text-sm">高山湖泊</h3>
+                            <div class="text-xs text-indigo-300">20分钟</div>
+                        </div>
+                        <div class="text-indigo-300 text-xs mb-2">
+                            德吉 · 高山湖泊与晨风
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-1 items-center">
+                                <i class="fas fa-play text-indigo-300 text-xs"></i>
+                                <span class="text-xs text-indigo-300">2,145次</span>
+                            </div>
+                            <button class="w-8 h-8 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                                <i class="fas fa-plus text-indigo-300 text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 推荐胶囊2 -->
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 flex items-center">
+                    <div class="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-tree text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold text-sm">森林晨露</h3>
+                            <div class="text-xs text-indigo-300">25分钟</div>
+                        </div>
+                        <div class="text-indigo-300 text-xs mb-2">
+                            山林守护者 · 林间自然声与鸟鸣
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-1 items-center">
+                                <i class="fas fa-play text-indigo-300 text-xs"></i>
+                                <span class="text-xs text-indigo-300">1,876次</span>
+                            </div>
+                            <button class="w-8 h-8 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                                <i class="fas fa-plus text-indigo-300 text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 推荐胶囊3 -->
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 flex items-center">
+                    <div class="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-moon text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold text-sm">夜晚冥想</h3>
+                            <div class="text-xs text-indigo-300">30分钟</div>
+                        </div>
+                        <div class="text-indigo-300 text-xs mb-2">
+                            梦境向导 · 引导式深度睡眠冥想
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-1 items-center">
+                                <i class="fas fa-play text-indigo-300 text-xs"></i>
+                                <span class="text-xs text-indigo-300">3,241次</span>
+                            </div>
+                            <button class="w-8 h-8 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                                <i class="fas fa-plus text-indigo-300 text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="virtual-room.html" class="flex flex-col items-center">
+            <i class="fas fa-globe text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">虚拟舱</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-purple-500"></i>
+            <span class="text-xs mt-1 text-purple-500 font-semibold">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+
+    <script>
+        let isPlaying = false;
+        let playerInterval;
+        let currentSeconds = 0;
+        const totalSeconds = 30 * 60; // 30分钟
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const playButton = document.getElementById('playButton');
+            playButton.addEventListener('click', togglePlayback);
+            
+            updatePlayerTime();
+        });
+        
+        function goBack() {
+            window.location.href = 'voice-capsule.html';
+        }
+        
+        function togglePlayback() {
+            const playButton = document.getElementById('playButton');
+            const waveformContainer = document.getElementById('waveformContainer');
+            
+            if (isPlaying) {
+                // 暂停播放
+                clearInterval(playerInterval);
+                playButton.innerHTML = '<i class="fas fa-play text-white"></i>';
+                waveformContainer.classList.remove('active-waveform');
+                waveformContainer.classList.add('paused-waveform');
+            } else {
+                // 开始播放
+                playerInterval = setInterval(updatePlayerProgress, 1000);
+                playButton.innerHTML = '<i class="fas fa-pause text-white"></i>';
+                waveformContainer.classList.remove('paused-waveform');
+                waveformContainer.classList.add('active-waveform');
+            }
+            
+            isPlaying = !isPlaying;
+        }
+        
+        function updatePlayerProgress() {
+            currentSeconds++;
+            
+            if (currentSeconds >= totalSeconds) {
+                clearInterval(playerInterval);
+                isPlaying = false;
+                document.getElementById('playButton').innerHTML = '<i class="fas fa-play text-white"></i>';
+                currentSeconds = 0;
+            }
+            
+            updatePlayerTime();
+        }
+        
+        function updatePlayerTime() {
+            const minutes = Math.floor(currentSeconds / 60).toString().padStart(2, '0');
+            const seconds = (currentSeconds % 60).toString().padStart(2, '0');
+            const totalMinutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+            const totalSeconds2 = (totalSeconds % 60).toString().padStart(2, '0');
+            
+            document.getElementById('playerTime').textContent = `${minutes}:${seconds} / ${totalMinutes}:${totalSeconds2}`;
+        }
+    </script>
+</body>
+</html>

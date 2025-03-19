@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 声音胶囊</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes wave {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .waveform {
+            display: flex;
+            align-items: center;
+            height: 30px;
+        }
+        
+        .waveform-bar {
+            width: 2px;
+            background-color: #9F7AEA;
+            margin: 0 1px;
+            border-radius: 1px;
+        }
+        
+        .capsule-card {
+            transition: transform 0.3s ease;
+        }
+        
+        .capsule-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .record-button {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(159, 122, 234, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(159, 122, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(159, 122, 234, 0); }
+        }
+        
+        .scrolling-tabs {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .scrolling-tabs::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-auto p-5">
+        <!-- 顶部导航 -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">声音胶囊库</h1>
+            <div class="flex space-x-3">
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-search text-indigo-300"></i>
+                </button>
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-filter text-indigo-300"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 分类标签 -->
+        <div class="scrolling-tabs mb-6 pb-1">
+            <button class="px-4 py-2 rounded-full bg-purple-600 text-white text-sm whitespace-nowrap mr-2">
+                全部
+            </button>
+            <button class="px-4 py-2 rounded-full bg-white bg-opacity-10 text-indigo-300 text-sm whitespace-nowrap mr-2">
+                已收藏
+            </button>
+            <button class="px-4 py-2 rounded-full bg-white bg-opacity-10 text-indigo-300 text-sm whitespace-nowrap mr-2">
+                自然环境
+            </button>
+            <button class="px-4 py-2 rounded-full bg-white bg-opacity-10 text-indigo-300 text-sm whitespace-nowrap mr-2">
+                轻声朗读
+            </button>
+            <button class="px-4 py-2 rounded-full bg-white bg-opacity-10 text-indigo-300 text-sm whitespace-nowrap mr-2">
+                白噪音
+            </button>
+            <button class="px-4 py-2 rounded-full bg-white bg-opacity-10 text-indigo-300 text-sm whitespace-nowrap mr-2">
+                冥想引导
+            </button>
+        </div>
+        
+        <!-- 推荐胶囊 -->
+        <div class="mb-8">
+            <h2 class="font-bold mb-4">精选推荐</h2>
+            
+            <div class="bg-opacity-10 bg-indigo-900 rounded-2xl p-5 capsule-card" onclick="location.href='capsule-details.html'">
+                <div class="flex">
+                    <div class="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center mr-4">
+                        <i class="fas fa-mountain text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold">雪山深处</h3>
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400 mr-1 text-xs"></i>
+                                <span class="text-xs">4.9</span>
+                            </div>
+                        </div>
+                        <div class="text-indigo-300 text-xs mb-3">
+                            藏族歌手德吉 · 30分钟 · 雪山环境音+呼吸冥想声音
+                        </div>
+                        
+                        <!-- 波形图 -->
+                        <div class="waveform mb-3">
+                            <div class="waveform-bar h-4" style="animation: wave 1.3s infinite; animation-delay: 0.1s"></div>
+                            <div class="waveform-bar h-6" style="animation: wave 1.5s infinite; animation-delay: 0.2s"></div>
+                            <div class="waveform-bar h-8" style="animation: wave 1.7s infinite; animation-delay: 0.3s"></div>
+                            <div class="waveform-bar h-12" style="animation: wave 1.9s infinite; animation-delay: 0.4s"></div>
+                            <div class="waveform-bar h-16" style="animation: wave 2.1s infinite; animation-delay: 0.5s"></div>
+                            <div class="waveform-bar h-12" style="animation: wave 1.9s infinite; animation-delay: 0.6s"></div>
+                            <div class="waveform-bar h-14" style="animation: wave 1.8s infinite; animation-delay: 0.7s"></div>
+                            <div class="waveform-bar h-10" style="animation: wave 1.7s infinite; animation-delay: 0.8s"></div>
+                            <div class="waveform-bar h-8" style="animation: wave 1.6s infinite; animation-delay: 0.9s"></div>
+                            <div class="waveform-bar h-12" style="animation: wave 1.5s infinite; animation-delay: 1.0s"></div>
+                            <div class="waveform-bar h-16" style="animation: wave 1.4s infinite; animation-delay: 1.1s"></div>
+                            <div class="waveform-bar h-12" style="animation: wave 1.3s infinite; animation-delay: 1.2s"></div>
+                            <div class="waveform-bar h-8" style="animation: wave 1.2s infinite; animation-delay: 1.3s"></div>
+                            <div class="waveform-bar h-10" style="animation: wave 1.1s infinite; animation-delay: 1.4s"></div>
+                            <div class="waveform-bar h-6" style="animation: wave 1.0s infinite; animation-delay: 1.5s"></div>
+                            <div class="waveform-bar h-4" style="animation: wave 0.9s infinite; animation-delay: 1.6s"></div>
+                            <div class="waveform-bar h-8" style="animation: wave 0.8s infinite; animation-delay: 1.7s"></div>
+                            <div class="waveform-bar h-10" style="animation: wave 0.7s infinite; animation-delay: 1.8s"></div>
+                            <div class="waveform-bar h-8" style="animation: wave 0.6s infinite; animation-delay: 1.9s"></div>
+                            <div class="waveform-bar h-6" style="animation: wave 0.5s infinite; animation-delay: 2.0s"></div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <div class="flex space-x-2">
+                                <button class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center">
+                                    <i class="fas fa-play text-white"></i>
+                                </button>
+                                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                                    <i class="fas fa-heart text-indigo-300"></i>
+                                </button>
+                                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                                    <i class="fas fa-download text-indigo-300"></i>
+                                </button>
+                            </div>
+                            <div class="text-indigo-300 text-xs self-end">
+                                已有3,456次播放
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 声音胶囊列表 -->
+        <div>
+            <h2 class="font-bold mb-4">声音胶囊库</h2>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <!-- 胶囊1 -->
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 capsule-card" onclick="location.href='capsule-details.html'">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-leaf text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">雨林晨曦</h3>
+                            <div class="text-indigo-300 text-xs">
+                                自然音系列
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="waveform mb-2 h-4">
+                        <div class="waveform-bar h-2" style="animation: wave 1.3s infinite; animation-delay: 0.1s"></div>
+                        <div class="waveform-bar h-3" style="animation: wave 1.5s infinite; animation-delay: 0.2s"></div>
+                        <div class="waveform-bar h-4" style="animation: wave 1.7s infinite; animation-delay: 0.3s"></div>
+                        <div class="waveform-bar h-3" style="animation: wave 1.9s infinite; animation-delay: 0.4s"></div>
+                        <div class="waveform-bar h-2" style="animation: wave 2.1s infinite; animation-delay: 0.5s"></div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <div class="text-xs text-indigo-300">15分钟</div>
+                        <button class="w-8 h-8 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                            <i class="fas fa-play text-indigo-300 text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 胶囊2 -->
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 capsule-card" onclick="location.href='capsule-details.html'">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-water text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">海浪轻拍</h3>
+                            <div class="text-indigo-300 text-xs">
+                                水声系列
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="waveform mb-2 h-4">
+                        <div class="waveform-bar h-2" style="animation: wave 1.3s infinite; animation-delay: 0.1s"></div>
+                        <div class="waveform-bar h-3" style="animation: wave 1.5s infinite; animation-delay: 0.2s"></div>
+                        <div class="waveform-bar h-2" style="animation: wave 1.7s infinite; animation-delay: 0.3s"></div>
+                        <div class="waveform-bar h-4" style="animation: wave 1.9s infinite; animation-delay: 0.4s"></div>
+                        <div class="waveform-bar h-3" style="animation: wave 2.1s infinite; animation-delay: 0.5s"></div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <div class="text-xs text-indigo-300">20分钟</div>
+                        <button class="w-8 h-8 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                            <i class="fas fa-play text-indigo-300 text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 胶囊3 -->
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 capsule-card" onclick="location.href='capsule-details.html'">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-yellow-500 to-red-500 flex items-center justify-center mr-3">
+                            <i class="fas fa-campground text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">篝火夜话</h3>
+                            <div class="text-indigo-300 text-xs">
+                                环境氛围
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="waveform mb-2 h-4">
+                        <div class="waveform-bar h-3" style="animation: wave 1.3s infinite; animation-delay: 0.1s"></div>
+                        <div class="waveform-bar h-2" style="animation: wave 1.5s infinite; animation-delay: 0.2s"></div>
+                        <div class="waveform-bar h-4" style="animation: wave 1.7s infinite; animation-delay: 0.3s"></div>
+                        <div class="waveform-bar h-3" style="animation: wave 1.9s infinite; animation-delay: 0.4s"></div>
+                        <div class="waveform-bar h-2" style="animation: wave 2.1s infinite; animation-delay: 0.5s"></div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <div class="text-xs text-indigo-300">25分钟</div>
+                        <button class="w-8 h-8 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                            <i class="fas fa-play text-indigo-300 text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 胶囊4 -->
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 capsule-card" onclick="location.href='capsule-details.html'">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mr-3">
+                            <i class="fas fa-book text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">晚安故事</h3>
+                            <div class="text-indigo-300 text-xs">
+                                轻声朗读
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="waveform mb-2 h-4">
+                        <div class="waveform-bar h-2" style="animation: wave 1.3s infinite; animation-delay: 0.1s"></div>
+                        <div class="waveform-bar h-4" style="animation: wave 1.5s infinite; animation-delay: 0.2s"></div>
+                        <div class="waveform-bar h-3" style="animation: wave 1.7s infinite; animation-delay: 0.3s"></div>
+                        <div class="waveform-bar h-2" style="animation: wave 1.9s infinite; animation-delay: 0.4s"></div>
+                        <div class="waveform-bar h-4" style="animation: wave 2.1s infinite; animation-delay: 0.5s"></div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <div class="text-xs text-indigo-300">18分钟</div>
+                        <button class="w-8 h-8 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                            <i class="fas fa-play text-indigo-300 text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 胶囊5 -->
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 capsule-card" onclick="location.href='capsule-details.html'">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500 to-blue-400 flex items-center justify-center mr-3">
+                            <i class="fas fa-moon text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">夜间冥想</h3>
+                            <div class="text-indigo-300 text-xs">
+                                引导冥想
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="waveform mb-2 h-4">
+                        <div class="waveform-bar h-4" style="animation: wave 1.3s infinite; animation-delay: 0.1s"></div>
+                        <div class="waveform-bar h-2" style="animation: wave 1.5s infinite; animation-delay: 0.2s"></div>
+                        <div class="waveform-bar h-3" style="animation: wave 1.7s infinite; animation-delay: 0.3s"></div>
+                        <div class="waveform-bar h-4" style="animation: wave 1.9s infinite; animation-delay: 0.4s"></div>
+                        <div class="waveform-bar h-2" style="animation: wave 2.1s infinite; animation-delay: 0.5s"></div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <div class="text-xs text-indigo-300">30分钟</div>
+                        <button class="w-8 h-8 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                            <i class="fas fa-play text-indigo-300 text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 胶囊6 -->
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 capsule-card" onclick="location.href='capsule-details.html'">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-wind text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">山间微风</h3>
+                            <div class="text-indigo-300 text-xs">
+                                舒缓白噪音
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="waveform mb-2 h-4">
+                        <div class="waveform-bar h-3" style="animation: wave 1.3s infinite; animation-delay: 0.1s"></div>
+                        <div class="waveform-bar h-2" style="animation: wave 1.5s infinite; animation-delay: 0.2s"></div>
+                        <div class="waveform-bar h-2" style="animation: wave 1.7s infinite; animation-delay: 0.3s"></div>
+                        <div class="waveform-bar h-3" style="animation: wave 1.9s infinite; animation-delay: 0.4s"></div>
+                        <div class="waveform-bar h-4" style="animation: wave 2.1s infinite; animation-delay: 0.5s"></div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <div class="text-xs text-indigo-300">45分钟</div>
+                        <button class="w-8 h-8 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                            <i class="fas fa-play text-indigo-300 text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 录制按钮 -->
+    <div class="fixed bottom-24 right-6">
+        <button onclick="location.href='record-voice.html'" class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg record-button">
+            <i class="fas fa-microphone text-white text-xl"></i>
+        </button>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="community.html" class="flex flex-col items-center">
+            <i class="fas fa-users text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">社区</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-purple-500"></i>
+            <span class="text-xs mt-1 text-purple-500 font-semibold">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+</body>
+</html>

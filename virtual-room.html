@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 虚拟共生舱</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        
+        .jellyfish {
+            filter: blur(1px);
+            opacity: 0.8;
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        .breath-indicator {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        
+        .waveform-animation {
+            animation: waveform 2s ease-in-out infinite;
+        }
+        
+        @keyframes waveform {
+            0%, 100% { height: 10px; }
+            25% { height: 20px; }
+            50% { height: 15px; }
+            75% { height: 25px; }
+        }
+        
+        .starry-bg {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #0A0F25, #0F1A3A);
+        }
+        
+        .keyword-bubble {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            margin: 5px;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .keyword-bubble:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-hidden relative flex flex-col">
+        <!-- 顶部导航 -->
+        <div class="p-5 flex justify-between items-center bg-opacity-50 bg-black backdrop-filter backdrop-blur-md">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-user-astronaut text-white"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold">虚拟共生舱</h2>
+                    <div class="flex items-center">
+                        <div class="w-2 h-2 rounded-full bg-green-400 mr-1"></div>
+                        <span class="text-xs text-green-400">已连接 · 声纹已验证</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex space-x-3">
+                <button class="w-9 h-9 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-volume-up text-indigo-300 text-sm"></i>
+                </button>
+                <button class="w-9 h-9 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-ellipsis-v text-indigo-300 text-sm"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 虚拟共生舱主体 -->
+        <div class="flex-1 relative starry-bg">
+            <!-- 主要视觉区域 -->
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="relative w-64 h-64">
+                    <!-- 水母动画（占位） -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <svg class="jellyfish w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#9F7AEA" d="M41.9,-47.4C54.6,-33.9,65.2,-19.2,68.2,-2.9C71.2,13.4,66.5,31.2,54.9,41.6C43.3,52,24.7,55,6.3,58.7C-12.1,62.5,-30.1,67,-46.8,60.5C-63.4,54.1,-78.7,36.8,-82.3,17.3C-85.9,-2.2,-77.7,-23.9,-64.6,-38.7C-51.4,-53.6,-33.3,-61.6,-17,-62.4C-0.8,-63.2,29.2,-61,41.9,-47.4Z" transform="translate(100 100)" />
+                        </svg>
+                        
+                        <!-- 呼吸指示灯 -->
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-purple-500 bg-opacity-50 breath-indicator"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 呼吸同步UI -->
+            <div class="absolute bottom-32 left-0 right-0 flex justify-center">
+                <div class="bg-black bg-opacity-40 backdrop-filter backdrop-blur-md rounded-full px-6 py-3 flex items-center">
+                    <div class="flex items-center space-x-1 mr-4">
+                        <div class="w-1.5 h-6 bg-purple-500 rounded waveform-animation"></div>
+                        <div class="w-1.5 h-4 bg-purple-500 rounded waveform-animation" style="animation-delay: 0.2s"></div>
+                        <div class="w-1.5 h-8 bg-purple-500 rounded waveform-animation" style="animation-delay: 0.4s"></div>
+                        <div class="w-1.5 h-5 bg-purple-500 rounded waveform-animation" style="animation-delay: 0.6s"></div>
+                        <div class="w-1.5 h-7 bg-purple-500 rounded waveform-animation" style="animation-delay: 0.8s"></div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-indigo-200">呼吸同步率</div>
+                        <div class="font-bold text-lg">87%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 对方虚拟形象 -->
+            <div class="absolute top-20 right-6">
+                <div class="relative">
+                    <svg class="jellyfish w-20 h-20" style="animation-delay: 1s" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#76A9FA" d="M41.9,-47.4C54.6,-33.9,65.2,-19.2,68.2,-2.9C71.2,13.4,66.5,31.2,54.9,41.6C43.3,52,24.7,55,6.3,58.7C-12.1,62.5,-30.1,67,-46.8,60.5C-63.4,54.1,-78.7,36.8,-82.3,17.3C-85.9,-2.2,-77.7,-23.9,-64.6,-38.7C-51.4,-53.6,-33.3,-61.6,-17,-62.4C-0.8,-63.2,29.2,-61,41.9,-47.4Z" transform="translate(100 100)" />
+                    </svg>
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-blue-500 bg-opacity-50 breath-indicator"></div>
+                </div>
+                <div class="mt-2 text-center">
+                    <div class="font-semibold text-sm">星沉-57</div>
+                    <div class="text-xs text-indigo-300">深度认证用户</div>
+                </div>
+            </div>
+            
+            <!-- 任务进度指示 -->
+            <div class="absolute top-5 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-40 backdrop-filter backdrop-blur-md rounded-full px-4 py-1.5">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-tasks text-xs text-indigo-300"></i>
+                    <div class="text-sm">共同呼吸绘制星图</div>
+                    <div class="text-xs text-green-400">78%</div>
+                </div>
+            </div>
+            
+            <!-- 新增: 用户资料查看按钮 (初始状态下禁用) -->
+            <div class="absolute top-20 left-6">
+                <button id="viewProfileBtn" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center mb-2 opacity-50 cursor-not-allowed" disabled title="完成共鸣任务后解锁">
+                    <i class="fas fa-address-card text-indigo-300"></i>
+                </button>
+                <button id="addFriendBtn" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center opacity-50 cursor-not-allowed" disabled title="完成共鸣任务后解锁">
+                    <i class="fas fa-user-plus text-indigo-300"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 底部控制区 -->
+        <div class="p-5 bg-opacity-50 bg-black backdrop-filter backdrop-blur-md">
+            <!-- 宇宙词云 -->
+            <div class="flex flex-wrap justify-center mb-5">
+                <div class="keyword-bubble">宇宙尘埃</div>
+                <div class="keyword-bubble">量子泡沫</div>
+                <div class="keyword-bubble">星际航行</div>
+                <div class="keyword-bubble">深海压强</div>
+                <div class="keyword-bubble">极光漫步</div>
+            </div>
+            
+            <!-- 控制按钮 -->
+            <div class="flex justify-between">
+                <button id="muteButton" class="w-12 h-12 rounded-full bg-white bg-opacity-10 flex items-center justify-center" onclick="toggleMute()">
+                    <i class="fas fa-microphone text-indigo-300"></i>
+                </button>
+                
+                <div class="flex space-x-4">
+                    <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center pulse-animation">
+                        <i class="fas fa-microphone text-white text-lg"></i>
+                    </button>
+                    
+                    <button class="w-14 h-14 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                        <i class="fas fa-wind text-indigo-300 text-lg"></i>
+                    </button>
+                </div>
+                
+                <button id="hangupButton" class="w-12 h-12 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center" onclick="hangupCall()">
+                    <i class="fas fa-times text-red-400"></i>
+                </button>
+            </div>
+            
+            <!-- 任务提示 -->
+            <div class="mt-5 text-center text-xs text-indigo-300">
+                轻轻呼吸，感受彼此的节奏，
+                <a href="task-completion.html" class="text-purple-400 underline">完成78%后将解锁自由对话</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="virtual-room.html" class="flex flex-col items-center">
+            <i class="fas fa-globe text-purple-500"></i>
+            <span class="text-xs mt-1 text-purple-500 font-semibold">虚拟舱</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+</body>
+
+<script>
+    // 模拟共鸣任务完成
+    // 在实际应用中，这将由实时通话和生物数据监测触发
+    function simulateTaskCompletion() {
+        // 允许用户查看资料和添加好友
+        document.getElementById('viewProfileBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+        document.getElementById('viewProfileBtn').removeAttribute('disabled');
+        document.getElementById('viewProfileBtn').title = "查看对方资料";
+        
+        document.getElementById('addFriendBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+        document.getElementById('addFriendBtn').removeAttribute('disabled');
+        document.getElementById('addFriendBtn').title = "添加为好友";
+        
+        // 添加点击事件处理
+        document.getElementById('viewProfileBtn').addEventListener('click', function() {
+            // 显示对方资料弹窗
+            alert('查看星沉-57的详细资料');
+        });
+        
+        document.getElementById('addFriendBtn').addEventListener('click', function() {
+            // 显示添加好友确认
+            if(confirm('确定要添加星沉-57为好友吗？')) {
+                alert('好友请求已发送!');
+                this.innerHTML = '<i class="fas fa-check text-green-400"></i>';
+                this.disabled = true;
+            }
+        });
+    }
+
+    // 为演示目的，我们在页面加载后延迟几秒模拟任务完成
+    // 在实际应用中，这应该根据用户实际完成任务的时间触发
+    setTimeout(function() {
+        // 模拟用户完成了共鸣任务
+        simulateTaskCompletion();
+    }, 5000);
+    
+    // 切换麦克风状态
+    function toggleMute() {
+        const muteButton = document.getElementById('muteButton');
+        const currentIcon = muteButton.querySelector('i');
+        
+        if (currentIcon.classList.contains('fa-microphone')) {
+            // 切换到静音状态
+            currentIcon.classList.remove('fa-microphone');
+            currentIcon.classList.add('fa-microphone-slash');
+            currentIcon.classList.remove('text-indigo-300');
+            currentIcon.classList.add('text-red-400');
+            muteButton.classList.add('bg-red-500', 'bg-opacity-20');
+            muteButton.classList.remove('bg-white', 'bg-opacity-10');
+            
+            // 在实际应用中，这里会调用API来静音麦克风
+            showToast("已静音");
+        } else {
+            // 取消静音
+            currentIcon.classList.remove('fa-microphone-slash');
+            currentIcon.classList.add('fa-microphone');
+            currentIcon.classList.remove('text-red-400');
+            currentIcon.classList.add('text-indigo-300');
+            muteButton.classList.remove('bg-red-500', 'bg-opacity-20');
+            muteButton.classList.add('bg-white', 'bg-opacity-10');
+            
+            // 在实际应用中，这里会调用API来取消静音麦克风
+            showToast("已取消静音");
+        }
+    }
+    
+    // 挂断通话
+    function hangupCall() {
+        // 在实际应用中，这里会调用API来结束通话
+        window.location.href = 'call-evaluation.html'; // 跳转到评价页面
+    }
+    
+    // 显示提示消息
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm z-50';
+        toast.innerText = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 500);
+        }, 2000);
+    }
+</script>
+</html>

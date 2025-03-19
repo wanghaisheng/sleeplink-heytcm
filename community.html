@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 社区</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+        
+        .story-avatar {
+            border: 2px solid transparent;
+            background: linear-gradient(#050A1F, #050A1F) padding-box,
+                        linear-gradient(to right, #9F7AEA, #76A9FA) border-box;
+        }
+        
+        .post-card {
+            transition: all 0.3s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-auto">
+        <!-- 顶部导航 -->
+        <div class="p-5 flex justify-between items-center">
+            <h1 class="text-xl font-bold">睡眠社区</h1>
+            <div class="flex space-x-3">
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-search text-indigo-300"></i>
+                </button>
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-bell text-indigo-300"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 故事圈 -->
+        <div class="px-5 mb-6">
+            <div class="overflow-x-auto">
+                <div class="flex space-x-4 py-2">
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full story-avatar flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600">
+                            <i class="fas fa-plus text-white"></i>
+                        </div>
+                        <span class="text-xs mt-1">新建</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full story-avatar overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User Story" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xs mt-1">星辰大海</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full story-avatar overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User Story" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xs mt-1">安静微风</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full story-avatar overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User Story" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xs mt-1">夜语星河</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full story-avatar overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="User Story" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xs mt-1">深海守望</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full story-avatar overflow-hidden">
+                            <img src="https://randomuser.me/api/portraits/women/62.jpg" alt="User Story" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xs mt-1">云雾缭绕</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 社区分类标签 -->
+        <div class="px-5 mb-6">
+            <div class="overflow-x-auto">
+                <div class="flex space-x-3 py-2">
+                    <button class="px-4 py-2 bg-purple-600 rounded-full text-white text-sm">
+                        全部
+                    </button>
+                    <button class="px-4 py-2 bg-white bg-opacity-10 rounded-full text-indigo-300 text-sm">
+                        睡眠技巧
+                    </button>
+                    <button class="px-4 py-2 bg-white bg-opacity-10 rounded-full text-indigo-300 text-sm">
+                        心得分享
+                    </button>
+                    <button class="px-4 py-2 bg-white bg-opacity-10 rounded-full text-indigo-300 text-sm">
+                        睡眠环境
+                    </button>
+                    <button class="px-4 py-2 bg-white bg-opacity-10 rounded-full text-indigo-300 text-sm">
+                        伴睡体验
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 社区动态 -->
+        <div class="px-5 space-y-6 mb-20">
+            <!-- 官方通知 -->
+            <div class="bg-opacity-20 bg-purple-900 rounded-2xl p-4 post-card">
+                <div class="flex items-start">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center bg-purple-600 mr-3 flex-shrink-0">
+                        <i class="fas fa-bullhorn text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="font-bold">SleepLink官方</div>
+                            <div class="text-indigo-300 text-xs">2小时前</div>
+                        </div>
+                        <p class="text-sm mb-3">
+                            【功能更新】我们推出了新的睡眠报告功能，现在您可以查看周/月视图，并分析与不同伴睡伙伴的睡眠质量关联。欢迎体验并提供反馈！
+                        </p>
+                        <div class="bg-black bg-opacity-30 rounded-xl p-3">
+                            <div class="text-sm font-semibold mb-1">11月更新要点：</div>
+                            <div class="text-xs text-indigo-300">
+                                1. 睡眠报告新增周/月视图<br>
+                                2. 伴睡伙伴影响分析<br>
+                                3. 社区功能全新上线<br>
+                                4. 性能优化与问题修复
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center mt-3">
+                            <div class="flex space-x-4">
+                                <button class="flex items-center text-indigo-300 text-sm">
+                                    <i class="far fa-heart mr-1"></i>
+                                    <span>124</span>
+                                </button>
+                                <button class="flex items-center text-indigo-300 text-sm">
+                                    <i class="far fa-comment mr-1"></i>
+                                    <span>36</span>
+                                </button>
+                            </div>
+                            <button class="flex items-center text-indigo-300 text-sm">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 用户分享1 -->
+            <div class="bg-opacity-10 bg-white rounded-2xl p-4 post-card">
+                <div class="flex items-start">
+                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User" class="w-10 h-10 rounded-full mr-3 flex-shrink-0">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="font-bold">星辰大海</div>
+                            <div class="text-indigo-300 text-xs">昨天 22:45</div>
+                        </div>
+                        <p class="text-sm mb-3">
+                            连续一周使用SleepLink伴睡功能，睡眠质量明显提升！之前总是辗转反侧到凌晨，现在半小时内就能入睡。推荐使用"雨声图书馆"声音胶囊，安静舒适，特别适合夜读爱好者。
+                        </p>
+                        <div class="bg-opacity-20 bg-indigo-900 rounded-xl p-3 mb-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-chart-line text-green-400 mr-2"></i>
+                                <div class="text-sm">睡眠质量提升了27%</div>
+                            </div>
+                        </div>
+                        <div class="rounded-xl overflow-hidden mb-3">
+                            <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Sleep Stats" class="w-full">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-4">
+                                <button class="flex items-center text-pink-400 text-sm">
+                                    <i class="fas fa-heart mr-1"></i>
+                                    <span>89</span>
+                                </button>
+                                <button class="flex items-center text-indigo-300 text-sm">
+                                    <i class="far fa-comment mr-1"></i>
+                                    <span>15</span>
+                                </button>
+                            </div>
+                            <button class="flex items-center text-indigo-300 text-sm">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 用户分享2 -->
+            <div class="bg-opacity-10 bg-white rounded-2xl p-4 post-card">
+                <div class="flex items-start">
+                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User" class="w-10 h-10 rounded-full mr-3 flex-shrink-0">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="font-bold">安静微风</div>
+                            <div class="text-indigo-300 text-xs">3天前</div>
+                        </div>
+                        <p class="text-sm mb-3">
+                            分享一个小技巧：在使用SleepLink前，将手机调至勿扰模式，并稍微降低屏幕亮度。在虚拟共生舱中进行5分钟的深呼吸练习，会让伴睡效果更好。这样能让大脑自然过渡到放松状态！
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="bg-indigo-900 bg-opacity-40 px-3 py-1 rounded-full text-xs">
+                                #睡眠技巧
+                            </span>
+                            <span class="bg-purple-900 bg-opacity-40 px-3 py-1 rounded-full text-xs">
+                                #伴睡体验
+                            </span>
+                            <span class="bg-blue-900 bg-opacity-40 px-3 py-1 rounded-full text-xs">
+                                #深呼吸练习
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-4">
+                                <button class="flex items-center text-indigo-300 text-sm">
+                                    <i class="far fa-heart mr-1"></i>
+                                    <span>56</span>
+                                </button>
+                                <button class="flex items-center text-indigo-300 text-sm">
+                                    <i class="far fa-comment mr-1"></i>
+                                    <span>7</span>
+                                </button>
+                            </div>
+                            <button class="flex items-center text-indigo-300 text-sm">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 用户提问 -->
+            <div class="bg-opacity-10 bg-white rounded-2xl p-4 post-card">
+                <div class="flex items-start">
+                    <img src="https://randomuser.me/api/portraits/women/62.jpg" alt="User" class="w-10 h-10 rounded-full mr-3 flex-shrink-0">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="font-bold">云雾缭绕</div>
+                            <div class="text-indigo-300 text-xs">4天前</div>
+                        </div>
+                        <p class="text-sm mb-3">
+                            有人尝试过全新的冥想向导功能吗？想知道是选择"星际漂流"还是"深海冥想"更容易入睡？晚上总是思绪万千，希望找到更有效的方式安静下来。
+                        </p>
+                        <div class="bg-opacity-20 bg-blue-900 rounded-xl p-3 mb-3">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-question-circle text-blue-400 mr-2"></i>
+                                <div class="text-sm font-semibold">投票：哪种冥想更助眠？</div>
+                            </div>
+                            <div class="space-y-2">
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span>星际漂流</span>
+                                        <span>68%</span>
+                                    </div>
+                                    <div class="h-2 bg-white bg-opacity-10 rounded-full">
+                                        <div class="h-2 bg-indigo-500 rounded-full" style="width: 68%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span>深海冥想</span>
+                                        <span>32%</span>
+                                    </div>
+                                    <div class="h-2 bg-white bg-opacity-10 rounded-full">
+                                        <div class="h-2 bg-blue-500 rounded-full" style="width: 32%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-4">
+                                <button class="flex items-center text-indigo-300 text-sm">
+                                    <i class="far fa-heart mr-1"></i>
+                                    <span>37</span>
+                                </button>
+                                <button class="flex items-center text-indigo-300 text-sm">
+                                    <i class="far fa-comment mr-1"></i>
+                                    <span>23</span>
+                                </button>
+                            </div>
+                            <button class="flex items-center text-indigo-300 text-sm">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 发布按钮 -->
+    <div class="fixed bottom-24 right-6">
+        <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg">
+            <i class="fas fa-plus text-white text-xl"></i>
+        </button>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="community.html" class="flex flex-col items-center">
+            <i class="fas fa-users text-purple-500"></i>
+            <span class="text-xs mt-1 text-purple-500 font-semibold">社区</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+</body>
+</html>

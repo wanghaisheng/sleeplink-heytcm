@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 睡眠报告</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+        
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-value {
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, #9F7AEA, #76A9FA);
+        }
+        
+        .sleep-quality-indicator {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(#9F7AEA 0% 85%, rgba(255, 255, 255, 0.1) 85% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .sleep-quality-inner {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #050A1F;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .sleep-stage-bar {
+            height: 24px;
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .deep-sleep {
+            background-color: #805AD5;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .light-sleep {
+            background-color: #6B46C1;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .rem-sleep {
+            background-color: #9F7AEA;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .awake {
+            background-color: #B794F4;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .chart-container {
+            height: 200px;
+            position: relative;
+            margin-bottom: 16px;
+        }
+        
+        .chart-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .chart-bar {
+            position: absolute;
+            bottom: 0;
+            width: 12px;
+            border-radius: 6px 6px 0 0;
+            background: linear-gradient(to top, #6B46C1, #9F7AEA);
+        }
+        
+        .sleep-insight-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 3px solid #9F7AEA;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-auto">
+        <!-- 顶部导航 -->
+        <div class="flex justify-between items-center p-5">
+            <button onclick="goBack()" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-arrow-left text-indigo-300"></i>
+            </button>
+            <h1 class="text-xl font-bold">睡眠报告</h1>
+            <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-share-alt text-indigo-300"></i>
+            </button>
+        </div>
+        
+        <!-- 日期选择器 -->
+        <div class="px-5 mb-6">
+            <div class="flex justify-between items-center">
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-chevron-left text-indigo-300"></i>
+                </button>
+                <div class="text-center">
+                    <h2 class="text-lg font-bold">2023年10月15日</h2>
+                    <div class="text-indigo-300 text-sm">星期日</div>
+                </div>
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-chevron-right text-indigo-300"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 睡眠概览 -->
+        <div class="px-5 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-chevron-left text-indigo-300"></i>
+                </button>
+                <div class="text-center">
+                    <h2 class="text-lg font-bold">2023年10月15日</h2>
+                    <div class="text-indigo-300 text-sm">星期日</div>
+                </div>
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-chevron-right text-indigo-300"></i>
+                </button>
+            </div>
+            
+            <!-- View tabs -->
+            <div class="flex rounded-lg bg-opacity-10 bg-white p-1 mb-2">
+                <button class="view-tab flex-1 py-2 rounded-lg bg-purple-600 text-white text-sm" data-view="day" onclick="switchView('day')">日视图</button>
+                <button class="view-tab flex-1 py-2 text-indigo-300 text-sm" data-view="week" onclick="switchView('week')">周视图</button>
+                <button class="view-tab flex-1 py-2 text-indigo-300 text-sm" data-view="month" onclick="switchView('month')">月视图</button>
+            </div>
+        </div>
+        
+        <!-- Day view (default) -->
+        <div id="day-view">
+            <div class="px-5 mb-6">
+                <div class="bg-opacity-10 bg-indigo-900 rounded-2xl p-5">
+                    <h2 class="font-bold mb-4">睡眠概览</h2>
+                    
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <div class="text-indigo-300 text-sm mb-1">总睡眠时长</div>
+                            <div class="text-3xl font-bold">7小时36分</div>
+                        </div>
+                        
+                        <div class="sleep-quality-indicator">
+                            <div class="sleep-quality-inner">
+                                <div class="text-3xl font-bold">85</div>
+                                <div class="text-sm text-indigo-300">睡眠得分</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="text-center">
+                            <div class="text-indigo-300 text-xs mb-1">入睡时间</div>
+                            <div class="font-bold">23:42</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-indigo-300 text-xs mb-1">醒来时间</div>
+                            <div class="font-bold">07:18</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-indigo-300 text-xs mb-1">睡眠效率</div>
+                            <div class="font-bold">92%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Week view -->
+        <div id="week-view" class="hidden">
+            <div class="px-5 mb-6">
+                <div class="bg-opacity-10 bg-white rounded-2xl p-5">
+                    <h2 class="font-bold mb-4">本周睡眠概览</h2>
+                    
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <div class="text-indigo-300 text-sm mb-1">平均睡眠时长</div>
+                            <div class="text-3xl font-bold">7小时12分</div>
+                        </div>
+                        
+                        <div class="sleep-quality-indicator">
+                            <div class="sleep-quality-inner">
+                                <div class="text-3xl font-bold">82</div>
+                                <div class="text-sm text-indigo-300">平均得分</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-7 gap-2 mb-4">
+                        <div class="text-center">
+                            <div class="text-xs text-indigo-300">周一</div>
+                            <div class="w-8 h-32 bg-opacity-10 bg-white rounded-t-lg mx-auto mt-2 relative">
+                                <div class="absolute bottom-0 w-full bg-purple-600 rounded-t-lg" style="height: 70%"></div>
+                            </div>
+                            <div class="text-xs font-bold mt-1">7h</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs text-indigo-300">周二</div>
+                            <div class="w-8 h-32 bg-opacity-10 bg-white rounded-t-lg mx-auto mt-2 relative">
+                                <div class="absolute bottom-0 w-full bg-purple-600 rounded-t-lg" style="height: 65%"></div>
+                            </div>
+                            <div class="text-xs font-bold mt-1">6.5h</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs text-indigo-300">周三</div>
+                            <div class="w-8 h-32 bg-opacity-10 bg-white rounded-t-lg mx-auto mt-2 relative">
+                                <div class="absolute bottom-0 w-full bg-purple-600 rounded-t-lg" style="height: 80%"></div>
+                            </div>
+                            <div class="text-xs font-bold mt-1">8h</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs text-indigo-300">周四</div>
+                            <div class="w-8 h-32 bg-opacity-10 bg-white rounded-t-lg mx-auto mt-2 relative">
+                                <div class="absolute bottom-0 w-full bg-purple-600 rounded-t-lg" style="height: 75%"></div>
+                            </div>
+                            <div class="text-xs font-bold mt-1">7.5h</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs text-indigo-300">周五</div>
+                            <div class="w-8 h-32 bg-opacity-10 bg-white rounded-t-lg mx-auto mt-2 relative">
+                                <div class="absolute bottom-0 w-full bg-purple-600 rounded-t-lg" style="height: 60%"></div>
+                            </div>
+                            <div class="text-xs font-bold mt-1">6h</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs text-indigo-300">周六</div>
+                            <div class="w-8 h-32 bg-opacity-10 bg-white rounded-t-lg mx-auto mt-2 relative">
+                                <div class="absolute bottom-0 w-full bg-purple-600 rounded-t-lg" style="height: 85%"></div>
+                            </div>
+                            <div class="text-xs font-bold mt-1">8.5h</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs text-indigo-300">周日</div>
+                            <div class="w-8 h-32 bg-opacity-10 bg-white rounded-t-lg mx-auto mt-2 relative">
+                                <div class="absolute bottom-0 w-full bg-purple-600 rounded-t-lg" style="height: 76%"></div>
+                            </div>
+                            <div class="text-xs font-bold mt-1">7.6h</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-opacity-10 bg-indigo-900 rounded-xl p-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-chart-line text-indigo-400 mt-1 mr-2"></i>
+                            <div class="text-sm">本周睡眠质量整体上升，周末睡眠时长明显增加，达到8.5小时。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Week connections analysis -->
+            <div class="px-5 mb-6">
+                <div class="bg-opacity-10 bg-white rounded-2xl p-5">
+                    <h2 class="font-bold mb-4">本周伴睡分析</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User" class="w-10 h-10 rounded-full mr-3">
+                            <div class="flex-1">
+                                <div class="flex justify-between mb-1">
+                                    <div class="font-semibold">星辰大海</div>
+                                    <div class="text-xs">伴睡2次</div>
+                                </div>
+                                <div class="h-2 bg-white bg-opacity-10 rounded-full">
+                                    <div class="h-2 bg-green-500 rounded-full" style="width: 90%"></div>
+                                </div>
+                                <div class="flex justify-between mt-1">
+                                    <div class="text-xs text-indigo-300">睡眠质量影响</div>
+                                    <div class="text-xs text-green-400">极佳</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User" class="w-10 h-10 rounded-full mr-3">
+                            <div class="flex-1">
+                                <div class="flex justify-between mb-1">
+                                    <div class="font-semibold">安静微风</div>
+                                    <div class="text-xs">伴睡1次</div>
+                                </div>
+                                <div class="h-2 bg-white bg-opacity-10 rounded-full">
+                                    <div class="h-2 bg-blue-500 rounded-full" style="width: 75%"></div>
+                                </div>
+                                <div class="flex justify-between mt-1">
+                                    <div class="text-xs text-indigo-300">睡眠质量影响</div>
+                                    <div class="text-xs text-blue-400">良好</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" class="w-10 h-10 rounded-full mr-3">
+                            <div class="flex-1">
+                                <div class="flex justify-between mb-1">
+                                    <div class="font-semibold">夜语星河</div>
+                                    <div class="text-xs">伴睡1次</div>
+                                </div>
+                                <div class="h-2 bg-white bg-opacity-10 rounded-full">
+                                    <div class="h-2 bg-red-500 rounded-full" style="width: 40%"></div>
+                                </div>
+                                <div class="flex justify-between mt-1">
+                                    <div class="text-xs text-indigo-300">睡眠质量影响</div>
+                                    <div class="text-xs text-red-400">不佳</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Month view -->
+        <div id="month-view" class="hidden">
+            <div class="px-5 mb-6">
+                <div class="bg-opacity-10 bg-white rounded-2xl p-5">
+                    <h2 class="font-bold mb-4">10月睡眠概览</h2>
+                    
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <div class="text-indigo-300 text-sm mb-1">月平均睡眠时长</div>
+                            <div class="text-3xl font-bold">7小时05分</div>
+                        </div>
+                        
+                        <div class="sleep-quality-indicator">
+                            <div class="sleep-quality-inner">
+                                <div class="text-3xl font-bold">79</div>
+                                <div class="text-sm text-indigo-300">月平均分</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Month sleep trend chart -->
+                    <div class="h-48 relative mb-4">
+                        <svg class="w-full h-full" viewBox="0 0 300 100" preserveAspectRatio="none">
+                            <!-- Grid lines -->
+                            <line x1="0" y1="0" x2="300" y2="0" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                            <line x1="0" y1="25" x2="300" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                            <line x1="0" y1="50" x2="300" y2="50" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                            <line x1="0" y1="75" x2="300" y2="75" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                            <line x1="0" y1="100" x2="300" y2="100" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                            
+                            <!-- Sleep quality line -->
+                            <path d="M0,70 C20,65 40,80 60,75 C80,70 100,50 120,45 C140,40 160,50 180,30 C200,25 220,15 240,20 C260,25 280,25 300,20" 
+                                  fill="none" stroke="#9F7AEA" stroke-width="2" />
+                            
+                            <!-- Area fill below the line -->
+                            <path d="M0,70 C20,65 40,80 60,75 C80,70 100,50 120,45 C140,40 160,50 180,30 C200,25 220,15 240,20 C260,25 280,25 300,20 L300,100 L0,100 Z" 
+                                  fill="url(#gradient)" opacity="0.3" />
+                            
+                            <!-- Gradient definition -->
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#9F7AEA" />
+                                    <stop offset="100%" stop-color="#9F7AEA" stop-opacity="0" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        
+                        <!-- Y-axis labels -->
+                        <div class="absolute top-0 left-0 text-xs text-indigo-300">10h</div>
+                        <div class="absolute top-1/4 left-0 text-xs text-indigo-300">8h</div>
+                        <div class="absolute top-1/2 left-0 text-xs text-indigo-300">6h</div>
+                        <div class="absolute top-3/4 left-0 text-xs text-indigo-300">4h</div>
+                        
+                        <!-- X-axis labels (simplified) -->
+                        <div class="absolute bottom-0 left-0 text-xs text-indigo-300">10/1</div>
+                        <div class="absolute bottom-0 left-1/4 text-xs text-indigo-300">10/8</div>
+                        <div class="absolute bottom-0 left-1/2 text-xs text-indigo-300">10/15</div>
+                        <div class="absolute bottom-0 left-3/4 text-xs text-indigo-300">10/22</div>
+                        <div class="absolute bottom-0 right-0 text-xs text-indigo-300">10/31</div>
+                    </div>
+                    
+                    <div class="bg-opacity-10 bg-green-900 rounded-xl p-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-arrow-trend-up text-green-400 mt-1 mr-2"></i>
+                            <div class="text-sm">本月睡眠质量呈现上升趋势，特别是月中旬开始显著提升。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Month connections analysis -->
+            <div class="px-5 mb-6">
+                <div class="bg-opacity-10 bg-white rounded-2xl p-5">
+                    <h2 class="font-bold mb-4">月度伴睡伙伴影响分析</h2>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <div class="font-semibold">积极影响</div>
+                                <div class="text-green-400 text-sm">提升睡眠质量</div>
+                            </div>
+                            
+                            <div class="flex -space-x-2 mb-3">
+                                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User" class="w-10 h-10 rounded-full border-2 border-green-500">
+                                <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User" class="w-10 h-10 rounded-full border-2 border-green-500">
+                                <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="User" class="w-10 h-10 rounded-full border-2 border-green-500">
+                                <div class="w-10 h-10 rounded-full bg-indigo-900 flex items-center justify-center text-xs border-2 border-green-500">+2</div>
+                            </div>
+                            
+                            <div class="text-sm text-indigo-300">
+                                这些伴睡伙伴帮助您提升了平均23%的睡眠质量，减少了18分钟的入睡时间。
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <div class="font-semibold">中性影响</div>
+                                <div class="text-indigo-300 text-sm">睡眠质量无明显变化</div>
+                            </div>
+                            
+                            <div class="flex -space-x-2 mb-3">
+                                <img src="https://randomuser.me/api/portraits/women/62.jpg" alt="User" class="w-10 h-10 rounded-full border-2 border-indigo-500">
+                                <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="User" class="w-10 h-10 rounded-full border-2 border-indigo-500">
+                                <div class="w-10 h-10 rounded-full bg-indigo-900 flex items-center justify-center text-xs border-2 border-indigo-500">+3</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <div class="font-semibold">负面影响</div>
+                                <div class="text-red-400 text-sm">降低睡眠质量</div>
+                            </div>
+                            
+                            <div class="flex -space-x-2 mb-3">
+                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" class="w-10 h-10 rounded-full border-2 border-red-500">
+                                <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="User" class="w-10 h-10 rounded-full border-2 border-red-500">
+                            </div>
+                            
+                            <div class="text-sm text-indigo-300">
+                                这些伴睡伙伴可能导致您的睡眠质量下降约10%，建议减少与这些用户的伴睡频率。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 睡眠阶段 -->
+        <div class="px-5 mb-6">
+            <div class="bg-opacity-10 bg-white rounded-2xl p-5">
+                <h2 class="font-bold mb-4">睡眠阶段</h2>
+                
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="text-sm">深度睡眠</div>
+                        <div class="text-sm">1小时42分</div>
+                    </div>
+                    <div class="sleep-stage-bar">
+                        <div class="deep-sleep" style="width: 22%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="text-sm">浅度睡眠</div>
+                        <div class="text-sm">3小时56分</div>
+                    </div>
+                    <div class="sleep-stage-bar">
+                        <div class="light-sleep" style="width: 52%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="text-sm">REM睡眠</div>
+                        <div class="text-sm">1小时28分</div>
+                    </div>
+                    <div class="sleep-stage-bar">
+                        <div class="rem-sleep" style="width: 19%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="text-sm">清醒</div>
+                        <div class="text-sm">30分</div>
+                    </div>
+                    <div class="sleep-stage-bar">
+                        <div class="awake" style="width: 7%"></div>
+                    </div>
+                </div>
+                
+                <div class="text-indigo-300 text-xs">
+                    <div class="flex justify-between mb-1">
+                        <span>睡眠周期：</span>
+                        <span>5个完整周期</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>入睡时长：</span>
+                        <span>14分钟（比您的平均值少8分钟）</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 睡眠趋势 -->
+        <div class="px-5 mb-6">
+            <div class="bg-opacity-10 bg-white rounded-2xl p-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-bold">本周睡眠趋势</h2>
+                    <div class="text-indigo-300 text-xs">
+                        10月9日 - 10月15日
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-line" style="bottom: 25%"></div>
+                    <div class="chart-line" style="bottom: 50%"></div>
+                    <div class="chart-line" style="bottom: 75%"></div>
+                    
+                    <div class="chart-bar" style="height: 55%; left: 5%; width: 8%"></div>
+                    <div class="chart-bar" style="height: 70%; left: 18%; width: 8%"></div>
+                    <div class="chart-bar" style="height: 48%; left: 31%; width: 8%"></div>
+                    <div class="chart-bar" style="height: 65%; left: 44%; width: 8%"></div>
+                    <div class="chart-bar" style="height: 75%; left: 57%; width: 8%"></div>
+                    <div class="chart-bar" style="height: 80%; left: 70%; width: 8%"></div>
+                    <div class="chart-bar" style="height: 85%; left: 83%; width: 8%"></div>
+                </div>
+                
+                <div class="flex justify-between text-indigo-300 text-xs px-4">
+                    <div>周一</div>
+                    <div>周二</div>
+                    <div>周三</div>
+                    <div>周四</div>
+                    <div>周五</div>
+                    <div>周六</div>
+                    <div>周日</div>
+                </div>
+                
+                <div class="mt-4 text-indigo-300 text-xs">
+                    <div class="flex items-center mb-1">
+                        <div class="w-3 h-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 mr-2"></div>
+                        <span>您的睡眠时长正在逐渐提高</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-gradient-to-r from-green-500 to-teal-400 mr-2"></div>
+                        <span>本周平均睡眠得分：78分（较上周提升12%）</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 睡眠洞察 -->
+        <div class="px-5 mb-10">
+            <h2 class="font-bold mb-4">睡眠洞察</h2>
+            
+            <div class="sleep-insight-card">
+                <div class="flex items-start">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center mr-3 flex-shrink-0">
+                        <i class="fas fa-lightbulb text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold mb-2">深度睡眠提升</h3>
+                        <p class="text-indigo-300 text-sm">
+                            您的深度睡眠比例达到22%，超过了健康标准（15-20%）。深度睡眠是身体恢复和记忆巩固的重要阶段，这表明您的睡眠质量正在改善。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sleep-insight-card">
+                <div class="flex items-start">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-teal-400 flex items-center justify-center mr-3 flex-shrink-0">
+                        <i class="fas fa-chart-line text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold mb-2">入睡时间改善</h3>
+                        <p class="text-indigo-300 text-sm">
+                            自从使用"雪山深处"声音胶囊后，您的平均入睡时间从22分钟缩短至14分钟，改善了36%。建议继续保持这一助眠习惯。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sleep-insight-card">
+                <div class="flex items-start">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center mr-3 flex-shrink-0">
+                        <i class="fas fa-moon text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold mb-2">睡眠节律稳定</h3>
+                        <p class="text-indigo-300 text-sm">
+                            您的睡眠-觉醒时间趋于规律，这有助于调整生物钟。本周您的入睡时间波动范围仅为±18分钟，比上周减少了40%。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 推荐胶囊 -->
+        <div class="px-5 mb-10">
+            <h2 class="font-bold mb-4">基于您的睡眠数据推荐</h2>
+            
+            <div class="grid grid-cols-1 gap-4">
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 flex items-center" onclick="location.href='capsule-details.html'">
+                    <div class="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center mr-4">
+                        <i class="fas fa-wind text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold text-sm">深海冥想</h3>
+                            <div class="text-xs text-indigo-300">25分钟</div>
+                        </div>
+                        <div class="text-indigo-300 text-xs mb-2">
+                            专为增加深度睡眠设计，呼吸引导+压力释放
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-xs text-indigo-300">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                4.9 (1,245人使用)
+                            </div>
+                            <button class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center">
+                                <i class="fas fa-play text-white text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-opacity-10 bg-white rounded-xl p-4 flex items-center" onclick="location.href='capsule-details.html'">
+                    <div class="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-green-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-leaf text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold text-sm">晨曦森林</h3>
+                            <div class="text-xs text-indigo-300">20分钟</div>
+                        </div>
+                        <div class="text-indigo-300 text-xs mb-2">
+                            有助于提升REM睡眠，晨间鸟鸣与溪流声
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="text-xs text-indigo-300">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                4.7 (928人使用)
+                            </div>
+                            <button class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center">
+                                <i class="fas fa-play text-white text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 伴睡伙伴分析 -->
+        <div class="px-5 mb-10">
+            <h2 class="font-bold mb-4">伴睡伙伴分析</h2>
+            
+            <div class="bg-opacity-10 bg-white rounded-2xl p-5 mb-4">
+                <h3 class="font-bold mb-3">睡眠质量影响排行</h3>
+                
+                <div class="space-y-4">
+                    <!-- Positive impact friend -->
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User" class="w-12 h-12 rounded-full mr-3">
+                        <div class="flex-1">
+                            <div class="flex justify-between mb-1">
+                                <div class="font-semibold">星辰大海</div>
+                                <div class="text-xs">伴睡6次</div>
+                            </div>
+                            <div class="text-xs text-indigo-300">6次伴睡 · 平均入睡时间降低14分钟</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Positive impact friend -->
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User" class="w-12 h-12 rounded-full mr-3">
+                        <div class="flex-1">
+                            <div class="flex justify-between mb-1">
+                                <div class="font-semibold">安静微风</div>
+                                <div class="text-xs">伴睡4次</div>
+                            </div>
+                            <div class="text-xs text-indigo-300">4次伴睡 · 深度睡眠增加21%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Negative impact friend -->
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" class="w-12 h-12 rounded-full mr-3">
+                        <div class="flex-1">
+                            <div class="flex justify-between mb-1">
+                                <div class="font-semibold">夜语星河</div>
+                                <div class="text-xs">伴睡2次</div>
+                            </div>
+                            <div class="text-xs text-indigo-300">2次伴睡 · 睡眠中断次数增加</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-opacity-10 bg-blue-900 rounded-2xl p-4">
+                <div class="flex items-start">
+                    <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center mr-3 flex-shrink-0">
+                        <i class="fas fa-lightbulb text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold mb-1">睡眠洞察</h3>
+                        <p class="text-indigo-200 text-sm">
+                            您与"星辰大海"伴睡后的睡眠质量明显提升。建议增加与该用户的伴睡频率，同时考虑减少与导致睡眠质量下降的用户的连接。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="virtual-room.html" class="flex flex-col items-center">
+            <i class="fas fa-globe text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">虚拟舱</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-purple-500"></i>
+            <span class="text-xs mt-1 text-purple-500 font-semibold">我的</span>
+        </a>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'profile.html';
+        }
+        
+        // Views switching functionality
+        function switchView(viewType) {
+            // Hide all views
+            document.getElementById('day-view').classList.add('hidden');
+            document.getElementById('week-view').classList.add('hidden');
+            document.getElementById('month-view').classList.add('hidden');
+            
+            // Show selected view
+            document.getElementById(viewType + '-view').classList.remove('hidden');
+            
+            // Update tab styling
+            const tabs = document.querySelectorAll('.view-tab');
+            tabs.forEach(tab => {
+                if (tab.getAttribute('data-view') === viewType) {
+                    tab.classList.add('bg-purple-600', 'text-white');
+                    tab.classList.remove('text-indigo-300');
+                } else {
+                    tab.classList.remove('bg-purple-600', 'text-white');
+                    tab.classList.add('text-indigo-300');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

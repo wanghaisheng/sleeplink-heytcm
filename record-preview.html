@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - 声音胶囊预览</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes wave {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .waveform {
+            display: flex;
+            align-items: center;
+            height: 120px;
+            justify-content: center;
+        }
+        
+        .waveform-bar {
+            width: 4px;
+            background: linear-gradient(to top, #9F7AEA, #76A9FA);
+            margin: 0 2px;
+            border-radius: 2px;
+        }
+        
+        .active-waveform .waveform-bar {
+            animation-play-state: running !important;
+        }
+        
+        .paused-waveform .waveform-bar {
+            animation-play-state: paused !important;
+        }
+        
+        .interest-tag {
+            background-color: rgba(159, 122, 234, 0.2);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            margin: 5px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-auto p-5">
+        <!-- 顶部导航 -->
+        <div class="flex justify-between items-center mb-6">
+            <button onclick="goBack()" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-arrow-left text-indigo-300"></i>
+            </button>
+            <h1 class="text-xl font-bold">声音胶囊预览</h1>
+            <div class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-ellipsis-h text-indigo-300"></i>
+            </div>
+        </div>
+        
+        <!-- 胶囊预览 -->
+        <div class="bg-opacity-10 bg-indigo-900 rounded-2xl p-5 mb-6">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-xl font-bold">雨中的山林</h2>
+                <div class="bg-purple-600 rounded-full px-3 py-1 text-xs font-semibold">
+                    01:45
+                </div>
+            </div>
+            
+            <div class="text-indigo-300 text-sm mb-4">
+                山林雨声环境与轻柔呼吸声相结合，打造自然放松氛围
+            </div>
+            
+            <div id="waveformContainer" class="waveform active-waveform mb-5">
+                <div class="waveform-bar h-10" style="animation: wave 1.3s infinite; animation-delay: 0.1s"></div>
+                <div class="waveform-bar h-16" style="animation: wave 1.4s infinite; animation-delay: 0.2s"></div>
+                <div class="waveform-bar h-24" style="animation: wave 1.5s infinite; animation-delay: 0.3s"></div>
+                <div class="waveform-bar h-36" style="animation: wave 1.6s infinite; animation-delay: 0.4s"></div>
+                <div class="waveform-bar h-48" style="animation: wave 1.7s infinite; animation-delay: 0.5s"></div>
+                <div class="waveform-bar h-64" style="animation: wave 1.8s infinite; animation-delay: 0.6s"></div>
+                <div class="waveform-bar h-80" style="animation: wave 1.9s infinite; animation-delay: 0.7s"></div>
+                <div class="waveform-bar h-96" style="animation: wave 2.0s infinite; animation-delay: 0.8s"></div>
+                <div class="waveform-bar h-80" style="animation: wave 1.9s infinite; animation-delay: 0.9s"></div>
+                <div class="waveform-bar h-64" style="animation: wave 1.8s infinite; animation-delay: 1.0s"></div>
+                <div class="waveform-bar h-48" style="animation: wave 1.7s infinite; animation-delay: 1.1s"></div>
+                <div class="waveform-bar h-36" style="animation: wave 1.6s infinite; animation-delay: 1.2s"></div>
+                <div class="waveform-bar h-24" style="animation: wave 1.5s infinite; animation-delay: 1.3s"></div>
+                <div class="waveform-bar h-16" style="animation: wave 1.4s infinite; animation-delay: 1.4s"></div>
+                <div class="waveform-bar h-10" style="animation: wave 1.3s infinite; animation-delay: 1.5s"></div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+                <div id="playerTime" class="text-indigo-300 text-sm">00:32 / 01:45</div>
+                <div class="text-indigo-300 text-xs">音量: 80%</div>
+            </div>
+            
+            <!-- 播放控制 -->
+            <div class="flex justify-center space-x-6 mt-6">
+                <button class="w-12 h-12 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-backward text-indigo-300 text-lg"></i>
+                </button>
+                
+                <button id="playButton" class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center" onclick="togglePlayback()">
+                    <i class="fas fa-pause text-white text-xl"></i>
+                </button>
+                
+                <button class="w-12 h-12 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <i class="fas fa-forward text-indigo-300 text-lg"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 胶囊信息 -->
+        <div class="bg-opacity-10 bg-white rounded-2xl p-5 mb-6">
+            <h3 class="text-lg font-bold mb-3">胶囊信息</h3>
+            
+            <div class="mb-4">
+                <div class="text-indigo-300 text-sm mb-1">类型</div>
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center mr-2">
+                        <i class="fas fa-leaf text-white"></i>
+                    </div>
+                    <div class="font-semibold">自然环境</div>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <div class="text-indigo-300 text-sm mb-1">声音标签</div>
+                <div class="flex flex-wrap">
+                    <div class="interest-tag">山林</div>
+                    <div class="interest-tag">雨声</div>
+                    <div class="interest-tag">呼吸</div>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <div class="text-indigo-300 text-sm mb-1">录制日期</div>
+                <div class="font-semibold">2023年10月15日</div>
+            </div>
+            
+            <div class="mb-4">
+                <div class="text-indigo-300 text-sm mb-1">音频质量</div>
+                <div class="font-semibold">高清 (192kbps)</div>
+            </div>
+        </div>
+        
+        <!-- 胶囊功效 -->
+        <div class="bg-opacity-10 bg-white rounded-2xl p-5 mb-6">
+            <h3 class="text-lg font-bold mb-3">适用场景</h3>
+            
+            <div class="flex flex-col space-y-3">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-opacity-20 bg-purple-500 flex items-center justify-center mr-3">
+                        <i class="fas fa-bed text-purple-400"></i>
+                    </div>
+                    <div>
+                        <div class="font-semibold">入睡辅助</div>
+                        <div class="text-indigo-300 text-sm">自然韵律帮助快速入睡</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-opacity-20 bg-blue-500 flex items-center justify-center mr-3">
+                        <i class="fas fa-brain text-blue-400"></i>
+                    </div>
+                    <div>
+                        <div class="font-semibold">压力缓解</div>
+                        <div class="text-indigo-300 text-sm">减轻焦虑，舒缓神经</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-opacity-20 bg-green-500 flex items-center justify-center mr-3">
+                        <i class="fas fa-wind text-green-400"></i>
+                    </div>
+                    <div>
+                        <div class="font-semibold">冥想辅助</div>
+                        <div class="text-indigo-300 text-sm">提供稳定专注的声音环境</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部按钮 -->
+        <div class="flex space-x-4 mb-10">
+            <button onclick="reRecording()" class="flex-1 py-3 rounded-xl bg-white bg-opacity-10 text-indigo-300 font-semibold">
+                重新录制
+            </button>
+            <button onclick="saveRecording()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold">
+                保存胶囊
+            </button>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="virtual-room.html" class="flex flex-col items-center">
+            <i class="fas fa-globe text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">虚拟舱</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-purple-500"></i>
+            <span class="text-xs mt-1 text-purple-500 font-semibold">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+
+    <script>
+        let isPlaying = true;
+        let elapsedSeconds = 32;
+        let totalSeconds = 105; // 01:45 in seconds
+        let timer;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            startTimer();
+        });
+        
+        function goBack() {
+            window.location.href = 'record-voice.html';
+        }
+        
+        function startTimer() {
+            timer = setInterval(function() {
+                if (isPlaying) {
+                    elapsedSeconds++;
+                    if (elapsedSeconds >= totalSeconds) {
+                        elapsedSeconds = 0;
+                    }
+                    updateTimeDisplay();
+                }
+            }, 1000);
+        }
+        
+        function updateTimeDisplay() {
+            const elapsedMinutes = Math.floor(elapsedSeconds / 60);
+            const elapsedSecondsDisplay = elapsedSeconds % 60;
+            const totalMinutes = Math.floor(totalSeconds / 60);
+            const totalSecondsDisplay = totalSeconds % 60;
+            
+            document.getElementById('playerTime').textContent = 
+                `${elapsedMinutes.toString().padStart(2, '0')}:${elapsedSecondsDisplay.toString().padStart(2, '0')} / ` +
+                `${totalMinutes.toString().padStart(2, '0')}:${totalSecondsDisplay.toString().padStart(2, '0')}`;
+        }
+        
+        function togglePlayback() {
+            isPlaying = !isPlaying;
+            const playButton = document.getElementById('playButton');
+            const waveformContainer = document.getElementById('waveformContainer');
+            
+            if (isPlaying) {
+                playButton.innerHTML = '<i class="fas fa-pause text-white text-xl"></i>';
+                waveformContainer.classList.remove('paused-waveform');
+                waveformContainer.classList.add('active-waveform');
+            } else {
+                playButton.innerHTML = '<i class="fas fa-play text-white text-xl"></i>';
+                waveformContainer.classList.remove('active-waveform');
+                waveformContainer.classList.add('paused-waveform');
+            }
+        }
+        
+        function reRecording() {
+            window.location.href = 'record-voice.html';
+        }
+        
+        function saveRecording() {
+            // 显示保存成功提示
+            alert('声音胶囊保存成功！');
+            window.location.href = 'voice-capsule.html';
+        }
+    </script>
+</body>
+</html>

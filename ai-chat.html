@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - AI智能聊天</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(159, 122, 234, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(159, 122, 234, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(159, 122, 234, 0); }
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        .breathe {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            margin-bottom: 12px;
+            word-wrap: break-word;
+        }
+        
+        .user-message {
+            background-color: rgba(159, 122, 234, 0.2);
+            border-radius: 18px 18px 4px 18px;
+            padding: 10px 14px;
+            align-self: flex-end;
+        }
+        
+        .ai-message {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 18px 18px 18px 4px;
+            padding: 10px 14px;
+            align-self: flex-start;
+        }
+        
+        .suggestion-chip {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 8px 12px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .suggestion-chip:hover {
+            background-color: rgba(159, 122, 234, 0.3);
+        }
+        
+        .typing-indicator {
+            display: flex;
+            padding: 8px 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            margin-bottom: 12px;
+            width: max-content;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: rgba(159, 122, 234, 0.6);
+            border-radius: 50%;
+            margin: 0 2px;
+            display: inline-block;
+            animation: typing-dot 1.4s infinite ease-in-out both;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing-dot {
+            0%, 80%, 100% { transform: scale(0.7); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg" id="stars-container"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-hidden flex flex-col">
+        <!-- 顶部导航 -->
+        <div class="p-5 flex justify-between items-center bg-opacity-40 bg-black backdrop-filter backdrop-blur-md">
+            <button onclick="goBack()" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-arrow-left text-indigo-300"></i>
+            </button>
+            <h1 class="text-xl font-bold">AI睡眠顾问</h1>
+            <div class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-cog text-indigo-300"></i>
+            </div>
+        </div>
+        
+        <!-- AI助手信息 -->
+        <div class="px-5 pt-5">
+            <div class="bg-opacity-20 bg-indigo-900 rounded-2xl p-4 mb-4">
+                <div class="flex items-center">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mr-4 breathe">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="font-bold text-lg">睡眠智脑</h2>
+                        <div class="text-indigo-300 text-sm">AI睡眠专家 • 随时为您解答睡眠问题</div>
+                        <div class="flex items-center mt-1">
+                            <div class="w-2 h-2 rounded-full bg-green-400 mr-1"></div>
+                            <span class="text-green-400 text-xs">已接入您的睡眠数据</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 聊天内容区 -->
+        <div class="flex-1 overflow-y-auto p-5" id="chat-container">
+            <div class="flex flex-col">
+                <!-- 系统消息 -->
+                <div class="text-center text-xs text-indigo-400 my-4">
+                    今天 9:41 PM
+                </div>
+                
+                <!-- AI消息 -->
+                <div class="flex items-end mb-4">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mr-2">
+                        <i class="fas fa-brain text-white text-xs"></i>
+                    </div>
+                    <div class="message-bubble ai-message">
+                        <p>晚上好，我是您的AI睡眠顾问。根据您的睡眠数据，我注意到您最近的睡眠质量有所下降。我可以帮您分析原因并提供改善建议。您最近有什么睡眠方面的困扰吗？</p>
+                    </div>
+                </div>
+                
+                <!-- 建议选项 -->
+                <div class="flex flex-wrap mb-6">
+                    <div class="suggestion-chip" onclick="sendMessage('我最近很难入睡')">
+                        我最近很难入睡
+                    </div>
+                    <div class="suggestion-chip" onclick="sendMessage('我半夜经常醒来')">
+                        我半夜经常醒来
+                    </div>
+                    <div class="suggestion-chip" onclick="sendMessage('我想改善睡眠质量')">
+                        我想改善睡眠质量
+                    </div>
+                    <div class="suggestion-chip" onclick="sendMessage('推荐一些助眠方法')">
+                        推荐一些助眠方法
+                    </div>
+                </div>
+                
+                <!-- 用户消息将在这里动态添加 -->
+                <!-- AI回复将在这里动态添加 -->
+            </div>
+        </div>
+        
+        <!-- 底部输入区 -->
+        <div class="p-5 bg-opacity-40 bg-black backdrop-filter backdrop-blur-md">
+            <div class="flex items-center">
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center mr-3">
+                    <i class="fas fa-microphone text-indigo-300"></i>
+                </button>
+                
+                <div class="flex-1 bg-white bg-opacity-10 rounded-full px-4 py-3 flex items-center">
+                    <input type="text" id="message-input" placeholder="输入您的问题..." class="bg-transparent w-full text-white placeholder-indigo-300 focus:outline-none">
+                    <button onclick="sendMessageFromInput()" class="text-indigo-300 focus:outline-none">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                
+                <button class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center ml-3">
+                    <i class="fas fa-plus text-indigo-300"></i>
+                </button>
+            </div>
+            
+            <!-- 更多建议 -->
+            <div class="mt-4 flex flex-wrap">
+                <div class="suggestion-chip" onclick="sendMessage('我需要伴睡声音')">
+                    我需要伴睡声音
+                </div>
+                <div class="suggestion-chip" onclick="sendMessage('如何找到合适的匹配伙伴')">
+                    如何找到合适的匹配伙伴
+                </div>
+                <div class="suggestion-chip" onclick="sendMessage('睡前放松技巧')">
+                    睡前放松技巧
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="virtual-room.html" class="flex flex-col items-center">
+            <i class="fas fa-globe text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">虚拟舱</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+
+    <script>
+        // 创建随机星星
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            
+            // 添加回车键发送消息
+            document.getElementById('message-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessageFromInput();
+                }
+            });
+        });
+        
+        function createStars() {
+            const starsContainer = document.getElementById('stars-container');
+            
+            for(let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 随机位置
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                
+                // 随机大小
+                const size = Math.random() * 2 + 1;
+                
+                // 随机透明度
+                const opacity = Math.random() * 0.5 + 0.5;
+                
+                star.style.top = `${top}%`;
+                star.style.left = `${left}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.opacity = opacity;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        function goBack() {
+            window.location.href = 'home.html';
+        }
+        
+        function sendMessageFromInput() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                sendMessage(message);
+                input.value = '';
+            }
+        }
+        
+        function sendMessage(message) {
+            const chatContainer = document.getElementById('chat-container');
+            const messagesDiv = chatContainer.querySelector('.flex-col');
+            
+            // 添加用户消息
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'flex items-end justify-end mb-4';
+            userMessageDiv.innerHTML = `
+                <div class="message-bubble user-message">
+                    <p>${message}</p>
+                </div>
+                <div class="w-8 h-8 rounded-full overflow-hidden ml-2">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-full h-full object-cover">
+                </div>
+            `;
+            messagesDiv.appendChild(userMessageDiv);
+            
+            // 滚动到底部
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // 显示正在输入指示器
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'flex items-end mb-4';
+            typingIndicator.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mr-2">
+                    <i class="fas fa-brain text-white text-xs"></i>
+                </div>
+                <div class="typing-indicator">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+            `;
+            messagesDiv.appendChild(typingIndicator);
+            
+            // 滚动到底部
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // 模拟AI回复延迟
+            setTimeout(() => {
+                // 移除正在输入指示器
+                messagesDiv.removeChild(typingIndicator);
+                
+                // 根据用户输入生成相应回复
+                let reply = getAIResponse(message);
+                
+                // 添加AI回复
+                const aiMessageDiv = document.createElement('div');
+                aiMessageDiv.className = 'flex items-end mb-4';
+                aiMessageDiv.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mr-2">
+                        <i class="fas fa-brain text-white text-xs"></i>
+                    </div>
+                    <div class="message-bubble ai-message">
+                        <p>${reply}</p>
+                    </div>
+                `;
+                messagesDiv.appendChild(aiMessageDiv);
+                
+                // 添加相关的建议选项
+                const suggestions = getRelatedSuggestions(message);
+                if (suggestions.length > 0) {
+                    const suggestionsDiv = document.createElement('div');
+                    suggestionsDiv.className = 'flex flex-wrap mb-6';
+                    
+                    suggestions.forEach(suggestion => {
+                        const chip = document.createElement('div');
+                        chip.className = 'suggestion-chip';
+                        chip.textContent = suggestion;
+                        chip.onclick = function() { sendMessage(suggestion); };
+                        suggestionsDiv.appendChild(chip);
+                    });
+                    
+                    messagesDiv.appendChild(suggestionsDiv);
+                }
+                
+                // 滚动到底部
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1500);
+        }
+        
+        function getAIResponse(message) {
+            // 根据用户输入返回相应的回复
+            const responses = {
+                '我最近很难入睡': '理解您的困扰。难以入睡可能与多种因素有关，如压力、使用电子设备、咖啡因摄入等。根据您的睡眠数据，我注意到您通常在晚上10点后仍在使用手机，蓝光可能抑制了褪黑素的分泌。建议您尝试在睡前1小时放下电子设备，也可以使用SleepLink的伴睡声音或冥想向导功能帮助放松身心。',
+                
+                '我半夜经常醒来': '夜间频繁醒来影响深度睡眠质量。您的睡眠数据显示，通常在凌晨2-3点出现浅睡状态。这可能与室温、噪音或晚餐时间有关。建议保持卧室温度在18-20度，减少环境噪音，晚餐提前到睡前3小时。您也可以尝试SleepLink的"深海漫游"声音胶囊，它特别设计用于帮助维持深度睡眠状态。',
+                
+                '我想改善睡眠质量': '提升睡眠质量需要综合考虑多方面因素。基于您的数据，我建议：1. 建立规律的睡眠时间表；2. 优化卧室环境（温度、湿度、光线）；3. 睡前放松活动如温水浴或轻度伸展；4. 尝试SleepLink的匹配功能，找到合适的伴睡伙伴可以显著提升安全感和睡眠质量。我们的数据显示，使用匹配功能的用户平均睡眠质量提升40%。',
+                
+                '推荐一些助眠方法': '根据您的睡眠模式，以下助眠方法可能适合您：1. 4-7-8呼吸法：吸气4秒，屏息7秒，呼气8秒；2. 渐进式肌肉放松：从脚趾开始，逐渐向上放松每个肌肉群；3. 尝试SleepLink的"雨林晨曦"或"海浪轻拍"声音胶囊；4. 使用"星际漂流"冥想向导，它专为您这种睡眠模式设计；5. 找到合适的伴睡伙伴，共同呼吸可以显著促进入睡。',
+                
+                '我需要伴睡声音': '伴睡声音是改善睡眠的有效方式。根据您的偏好和睡眠数据，我推荐以下声音胶囊：1. "雪山深处" - 藏族歌手德吉录制的雪山环境音；2. "海浪轻拍" - 节奏与您的理想呼吸频率匹配；3. "夜间冥想" - 包含引导式放松指导。您也可以尝试使用SleepLink的匹配功能，寻找有相似兴趣的真人伴睡伙伴，共同的呼吸节奏可以帮助您更快入睡。',
+                
+                '如何找到合适的匹配伙伴': '寻找理想的伴睡伙伴需要考虑多方面因素。建议您：1. 在个人资料中详细填写您的兴趣标签，如"深海白噪音"、"安静阅读"等；2. 设置"纯净模式"，只匹配经过深度认证的用户；3. 优先选择睡眠习惯与您相似的用户（可在匹配界面查看）；4. 使用任务导向的破冰活动，如"共同呼吸绘制星图"，这样可以避免尴尬并快速建立舒适连接。根据数据，完成至少两次共鸣任务的伙伴匹配成功率提升65%。',
+                
+                '睡前放松技巧': '针对您的睡眠模式，以下睡前放松技巧可能特别有效：1. 身体扫描冥想：从头到脚注意每个部位，然后放松；2. 暖足浴：提高体温再降温有助于入睡信号释放；3. 书写感恩日记：每晚记录3件感恩事项，减少焦虑；4. 尝试SleepLink的"呼吸聚焦"冥想，它会根据您的生物数据实时调整引导节奏；5. 使用匹配功能找到伴睡伙伴，共同完成"深呼吸同步"任务，这对降低睡前焦虑特别有效。'
+            };
+            
+            // 默认回复
+            let defaultResponses = [
+                '感谢您的问题。根据您的睡眠数据和使用习惯，我建议您可以尝试SleepLink的虚拟共生舱功能，它能够帮助您通过呼吸同步建立安心感。您也可以浏览声音胶囊库，寻找适合您的伴睡声音。具体来说，"雪山深处"和"深海漫游"这两个胶囊与您过去的喜好非常匹配。',
+                
+                '这是个很好的问题。分析您的睡眠数据后，我发现您在使用SleepLink的匹配功能后，睡眠效率提高了约18%。建议您继续使用安全匹配系统，选择深度认证用户进行匹配，并尝试完成多样化的共鸣任务，这有助于建立更稳定的睡眠节律。',
+                
+                '根据您的提问，我想推荐您使用SleepLink的冥想向导功能。特别是"星际漂流"项目，它专为您这种睡眠模式设计。此外，您最近使用的声音胶囊"海浪轻拍"效果良好，数据显示它帮助您平均减少了10分钟的入睡时间。',
+                
+                '您提出了一个重要问题。从您的睡眠报告来看，当您使用伴睡功能时，深度睡眠比例增加了23%。为了进一步改善，建议您尝试SleepLink的AI伴睡助手，它可以根据您的呼吸频率实时调整互动策略，帮助您更快进入深度睡眠状态。'
+            ];
+            
+            // 检查是否有针对性回复，如果没有则随机选择一个默认回复
+            for (let key in responses) {
+                if (message.includes(key)) {
+                    return responses[key];
+                }
+            }
+            
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+        
+        function getRelatedSuggestions(message) {
+            // 根据用户消息返回相关建议
+            if (message.includes('入睡') || message.includes('难以入睡')) {
+                return ['我可以尝试什么放松技巧？', '如何改善卧室环境？', '推荐一些助眠声音'];
+            } else if (message.includes('醒来') || message.includes('半夜醒')) {
+                return ['如何保持深度睡眠？', '我该调整作息时间吗？', '需要使用助眠设备吗？'];
+            } else if (message.includes('睡眠质量')) {
+                return ['如何追踪我的睡眠？', '哪些因素影响睡眠质量？', '推荐睡眠提升计划'];
+            } else if (message.includes('伴睡') || message.includes('匹配')) {
+                return ['如何安全使用匹配功能？', '我想尝试AI伴睡', '声音胶囊有哪些类型？'];
+            } else if (message.includes('放松') || message.includes('冥想')) {
+                return ['有哪些冥想课程？', '呼吸练习的好处', '如何使用虚拟共生舱？'];
+            }
+            
+            // 默认建议
+            return ['分析我的睡眠报告', '如何改善睡眠环境？', '需要睡眠建议'];
+        }
+    </script>
+</body>
+</html>

@@ -1,132 +1,1168 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="A mobile simulator designed to demonstrate mobile interface design.">
-  <meta name="keywords" content="mobile, simulator, mobile design, mobile app">
-  <meta name="author" content="Your Name or Company">
-  <meta http-equiv="Content-Language" content="en">
-
-  <!-- Canonical Link -->
-  <link rel="canonical" href="https://www.yourwebsite.com/pc-simulator" />
-
-  <!-- Open Graph for Social Media -->
-  <meta property="og:title" content="PC Simulator">
-  <meta property="og:description" content="A mobile simulator designed to demonstrate mobile interface design.">
-  <meta property="og:image" content="https://www.yourwebsite.com/pc-simulator-image.jpg">
-  <meta property="og:url" content="https://www.yourwebsite.com/pc-simulator">
-  <meta property="og:type" content="website">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="PC Simulator">
-  <meta name="twitter:description" content="A mobile simulator designed to demonstrate mobile interface design.">
-  <meta name="twitter:image" content="https://www.yourwebsite.com/pc-simulator-image.jpg">
-  <meta name="twitter:creator" content="@yourtwitterhandle">
-
-  <!-- Favicon -->
-  <link rel="icon" href="https://www.yourwebsite.com/favicon.ico" type="image/x-icon">
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'UA-XXXXX-Y');
-  </script>
-
-  <!-- Microsoft Clarity -->
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y) {
-      window.clarity=window.clarity||function(){(clarity.q=clarity.q||[]).push(arguments)};
-      clarity('set', 'anonymizeIP', true);
-      i=l.createElement('script');i.async=1;i.src=r;i.type='text/javascript';
-      t=l.getElementsByTagName('script')[0];t.parentNode.insertBefore(i,t);
-    })(document,window,'script','https://www.clarity.ms/tag/XXXXXX');
-  </script>
-
-  <title>PC Simulator</title>
-
-  <style>
-    /* Global Styles */
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
-
-    .mobile-container {
-      width: 360px;
-      height: 640px;
-      border: 16px solid black;
-      border-radius: 16px;
-      background-color: #fff;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .content {
-      font-size: 1.2rem;
-      color: #333;
-    }
-
-    /* Adjustments for PC */
-    @media (min-width: 768px) {
-      .mobile-container {
-        width: 600px;
-        height: 1000px;
-      }
-
-      .content {
-        font-size: 1.5rem;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .mobile-container {
-        width: 800px;
-        height: 1400px;
-      }
-
-      .content {
-        font-size: 1.8rem;
-      }
-    }
-
-    /* Additional responsiveness for larger screens */
-    @media (min-width: 1200px) {
-      body {
-        justify-content: flex-start;
-      }
-
-      .mobile-container {
-        margin-top: 50px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="app.title">SleepLink - 不再孤独的深度睡眠体验</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.5/dist/cdn.min.js" defer></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #050A1F;
+            color: #E0E7FF;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #9F7AEA, #76A9FA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1A1F35, #0C1228);
+        }
+        
+        .gradient-border {
+            position: relative;
+        }
+        
+        .gradient-border::before {
+            content: "";
+            position: absolute;
+            top: -2px; right: -2px; bottom: -2px; left: -2px;
+            background: linear-gradient(90deg, #9F7AEA, #76A9FA);
+            border-radius: 0.5rem;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: twinkle 4s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            border-radius: 36px;
+            padding: 14px;
+            background-color: #0A0F25;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .phone-screen {
+            height: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            background-color: #0A0F25;
+        }
+        
+        .status-bar {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            background-color: #0A0F25;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+        }
+        
+        .cta-button {
+            background: linear-gradient(90deg, #9F7AEA, #76A9FA);
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(159, 122, 234, 0.3);
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tab-nav {
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* 生成100个随机星星 */
+        #stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+    </style>
 </head>
+<body class="relative">
+    <!-- 星空背景 -->
+    <div id="stars-container"></div>
 
-<body>
-  <div class="mobile-container">
-    <div class="content">
-      <p>Mobile Simulator Screen</p>
-      <p>PC Version: Adjusted for larger screens.</p>
-    </div>
-  </div>
+    <!-- Hero Section -->
+    <section class="relative py-20 lg:py-32 overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0">
+                    <h1 class="text-4xl lg:text-5xl font-bold mb-6" data-i18n="landing.hero.title">
+                        告别孤独失眠，迎接温暖陪伴
+                    </h1>
+                    <h2 class="text-xl lg:text-2xl mb-8 text-indigo-200 leading-relaxed" data-i18n="landing.hero.subtitle">
+                        SleepLink让您在入睡时不再感到孤单，安全纯净的声音陪伴，让每个人都能享受有人守护的安心睡眠
+                    </h2>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#waiting-list" class="cta-button py-3 px-8 rounded-full text-white font-semibold text-lg shadow-lg flex items-center justify-center" data-i18n="landing.hero.cta.primary">
+                            <i class="fas fa-rocket mr-2"></i> 加入等待名单
+                        </a>
+                        <a href="#features" class="py-3 px-8 rounded-full bg-white bg-opacity-10 text-white font-semibold text-lg hover:bg-opacity-20 transition duration-300 flex items-center justify-center" data-i18n="landing.hero.cta.secondary">
+                            <i class="fas fa-star mr-2"></i> 探索功能
+                        </a>
+                    </div>
+                    <div class="mt-8 flex items-center">
+                        <div class="flex -space-x-2">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" class="w-10 h-10 rounded-full border-2 border-indigo-900">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="w-10 h-10 rounded-full border-2 border-indigo-900">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" class="w-10 h-10 rounded-full border-2 border-indigo-900">
+                        </div>
+                        <p class="ml-4 text-indigo-200" data-i18n="landing.hero.users">已有2,500+用户加入等待名单</p>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full opacity-20 blur-3xl"></div>
+                    <div class="relative z-10 floating">
+                        <div class="phone-mockup mx-auto">
+                            <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+                                <span>9:41</span>
+                                <div class="flex space-x-1">
+                                    <i class="fas fa-signal"></i>
+                                    <i class="fas fa-wifi"></i>
+                                    <i class="fas fa-battery-full"></i>
+                                </div>
+                            </div>
+                            <div class="phone-screen">
+                                <img src="https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="SleepLink App" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem/Solution Section -->
+    <section class="py-20 gradient-bg">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h2 class="text-3xl font-bold mb-6" data-i18n="landing.problem.title">
+                    还在为孤独失眠而困扰吗？你不是一个人！
+                </h2>
+                <p class="text-xl text-indigo-200 mb-12" data-i18n="landing.problem.description">
+                    每个夜晚，超过30%的人都在经历入睡困难，辗转反侧不仅浪费时间，更让情绪低落。现代社会的高节奏让我们沉浸在压力中，却缺乏那份入睡时的安全感。
+                </p>
+                <div class="relative w-full">
+                    <div class="aspect-video overflow-hidden rounded-xl shadow-2xl mb-4">
+                        <video autoplay loop muted playsinline class="w-full">
+                            <source src="https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="bg-black bg-opacity-60 p-6 rounded-lg text-center max-w-lg">
+                            <h3 class="text-2xl font-bold mb-3 gradient-text" data-i18n="landing.solution.title">
+                                SleepLink 为您带来革命性的伴睡体验
+                            </h3>
+                            <p class="text-white" data-i18n="landing.solution.description">
+                                我们专为失眠者打造的声音陪伴系统，让您感受真实存在的温暖，同时确保100%的安全与隐私。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-20">
+                <div class="bg-opacity-10 bg-white rounded-2xl p-8 feature-card gradient-border">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center mb-6">
+                        <i class="fas fa-moon text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="landing.painpoint.one.title">失眠与孤独感</h3>
+                    <p class="text-indigo-200" data-i18n="landing.painpoint.one.description">
+                        研究表明，91%的失眠者报告有强烈孤独感，特别是在入睡前。这种感觉会导致焦虑水平上升，进一步恶化睡眠质量。
+                    </p>
+                </div>
+                <div class="bg-opacity-10 bg-white rounded-2xl p-8 feature-card gradient-border">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="landing.painpoint.two.title">安全与连接需求</h3>
+                    <p class="text-indigo-200" data-i18n="landing.painpoint.two.description">
+                        84%的用户希望能在睡前听到真实人声，但同时也担心安全和隐私问题。现有社交应用往往无法提供安全的语音互动环境。
+                    </p>
+                </div>
+                <div class="bg-opacity-10 bg-white rounded-2xl p-8 feature-card gradient-border">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center mb-6">
+                        <i class="fas fa-comment-slash text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="landing.painpoint.three.title">不当内容问题</h3>
+                    <p class="text-indigo-200" data-i18n="landing.painpoint.three.description">
+                        传统语音社交平台中，78%的用户曾遭遇不适当内容，这让许多人望而却步，无法获得需要的陪伴。
+                    </p>
+                </div>
+                <div class="bg-opacity-10 bg-white rounded-2xl p-8 feature-card gradient-border">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center mb-6">
+                        <i class="fas fa-robot text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="landing.painpoint.four.title">AI伴睡不够真实</h3>
+                    <p class="text-indigo-200" data-i18n="landing.painpoint.four.description">
+                        虽然AI解决方案日益普及，但67%的用户反馈AI声音缺乏真实温度，无法提供人类情感连接所带来的安心感。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section id="features" class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-6" data-i18n="landing.features.title">
+                    SleepLink如何帮您享受安心睡眠
+                </h2>
+                <p class="text-xl text-indigo-200 max-w-3xl mx-auto" data-i18n="landing.features.subtitle">
+                    我们精心设计的伴睡体验专注于三大核心要素：真实陪伴感、安全纯净和个性化共鸣
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <!-- Feature 1 -->
+                <div class="feature-card rounded-2xl overflow-hidden">
+                    <div class="aspect-video relative">
+                        <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="安全匹配系统" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full" data-i18n="landing.features.one.badge">
+                                核心功能
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-opacity-10 bg-white">
+                        <h3 class="text-xl font-bold mb-3" data-i18n="landing.features.one.title">
+                            安全匹配系统
+                        </h3>
+                        <p class="text-indigo-200 mb-4" data-i18n="landing.features.one.description">
+                            三重身份认证确保每位用户都经过严格筛选，AI声纹防火墙实时监测不当内容，让您可以完全放心地与真人建立连接。
+                        </p>
+                        <div class="mt-4">
+                            <div class="overflow-hidden rounded-lg">
+                                <img src="https://images.unsplash.com/photo-1580130379624-3a069adbffc5?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="安全匹配系统演示" class="w-full transform hover:scale-105 transition duration-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card rounded-2xl overflow-hidden">
+                    <div class="aspect-video relative">
+                        <img src="https://images.unsplash.com/photo-1535954741780-a614306bef5a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="虚拟共生舱" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full" data-i18n="landing.features.two.badge">
+                                独特体验
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-opacity-10 bg-white">
+                        <h3 class="text-xl font-bold mb-3" data-i18n="landing.features.two.title">
+                            去性别化虚拟共生舱
+                        </h3>
+                        <p class="text-indigo-200 mb-4" data-i18n="landing.features.two.description">
+                            通过抽象化生物形态和中性化声纹技术，消除性别联想，让社交互动回归最纯粹的情感连接和陪伴。
+                        </p>
+                        <div class="mt-4">
+                            <div class="overflow-hidden rounded-lg">
+                                <video autoplay loop muted playsinline class="w-full transform hover:scale-105 transition duration-500">
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-blue-glowing-jellyfish-in-the-deep-28336-large.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card rounded-2xl overflow-hidden">
+                    <div class="aspect-video relative">
+                        <img src="https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="人声胶囊银行" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-full" data-i18n="landing.features.three.badge">
+                                创新功能
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-opacity-10 bg-white">
+                        <h3 class="text-xl font-bold mb-3" data-i18n="landing.features.three.title">
+                            人声胶囊银行
+                        </h3>
+                        <p class="text-indigo-200 mb-4" data-i18n="landing.features.three.description">
+                            不适合实时连麦？从声音漂流计划中提取经过认证的安心声音，或贡献您的声音帮助他人，建立互助式声音社区。
+                        </p>
+                        <div class="mt-4">
+                            <div class="overflow-hidden rounded-lg">
+                                <video autoplay loop muted playsinline class="w-full transform hover:scale-105 transition duration-500">
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-waves-coming-to-the-shore-5016-large.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#app-demo" class="cta-button py-3 px-8 rounded-full text-white font-semibold text-lg shadow-lg inline-flex items-center" data-i18n="landing.features.cta">
+                    <i class="fas fa-mobile-alt mr-2"></i> 查看全部功能演示
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition Section -->
+    <section class="py-20 gradient-bg">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold mb-6" data-i18n="landing.value.title">
+                        SleepLink - 失眠者的深度共鸣港湾
+                    </h2>
+                    <p class="text-xl text-indigo-200" data-i18n="landing.value.subtitle">
+                        我们致力于打造一个既提供真实人声温度，又100%安全纯净的夜间伴睡空间，平均帮助用户减少40%的入睡时间
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="bg-opacity-10 bg-white p-8 rounded-2xl">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-shield-alt text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-3" data-i18n="landing.value.one.title">安全先于一切</h3>
+                                <p class="text-indigo-200" data-i18n="landing.value.one.description">
+                                    每个用户都经过多重验证系统筛选，结合实时AI监控，让您在夜间最脆弱的时刻依然感到安全。我们的用户报告显示，使用SleepLink后，睡前焦虑降低了68%。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-opacity-10 bg-white p-8 rounded-2xl">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-users text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-3" data-i18n="landing.value.two.title">真实却纯净的连接</h3>
+                                <p class="text-indigo-200" data-i18n="landing.value.two.description">
+                                    独特的去性别化互动设计，消除了传统语音社交中的暧昧因素，保留最本质的人类连接。我们的核心价值是让陪伴回归纯粹，89%的测试用户表示这是他们最喜欢的功能。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-opacity-10 bg-white p-8 rounded-2xl">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-brain text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-3" data-i18n="landing.value.three.title">生物数据驱动的个性化</h3>
+                                <p class="text-indigo-200" data-i18n="landing.value.three.description">
+                                    我们独特的智能戒指同步您的心率、呼吸频率等生物数据，根据您的身体状态实时调整互动模式。根据测试，这使睡眠满意度提升了74%。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-opacity-10 bg-white p-8 rounded-2xl">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 rounded-full bg-pink-500 flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-rocket text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-3" data-i18n="landing.value.four.title">无压力社交体验</h3>
+                                <p class="text-indigo-200" data-i18n="landing.value.four.description">
+                                    "睡眠逃生舱协议"让您随时优雅退出，不会感到社交压力或负疚感。92%的用户认为，这一设计大大降低了使用门槛。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-16 text-center">
+                    <div class="inline-block bg-opacity-20 bg-white rounded-xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2" data-i18n="landing.value.stats.title">SleepLink效果数据</div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-6">
+                            <div>
+                                <div class="text-3xl font-bold gradient-text">-40%</div>
+                                <div class="text-indigo-200 text-sm" data-i18n="landing.value.stats.one">入睡时间</div>
+                            </div>
+                            <div>
+                                <div class="text-3xl font-bold gradient-text">+68%</div>
+                                <div class="text-indigo-200 text-sm" data-i18n="landing.value.stats.two">睡眠质量</div>
+                            </div>
+                            <div>
+                                <div class="text-3xl font-bold gradient-text">-62%</div>
+                                <div class="text-indigo-200 text-sm" data-i18n="landing.value.stats.three">夜间焦虑</div>
+                            </div>
+                            <div>
+                                <div class="text-3xl font-bold gradient-text">92%</div>
+                                <div class="text-indigo-200 text-sm" data-i18n="landing.value.stats.four">用户推荐率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof/Testimonials Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-6" data-i18n="landing.testimonials.title">
+                    超过2,500位用户的共同选择
+                </h2>
+                <p class="text-xl text-indigo-200 max-w-3xl mx-auto" data-i18n="landing.testimonials.subtitle">
+                    听听那些已经体验过SleepLink的用户们怎么说
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-opacity-10 bg-white rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="用户照片" class="w-14 h-14 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold" data-i18n="landing.testimonials.one.name">陈美琪</h4>
+                            <div class="text-indigo-300 text-sm" data-i18n="landing.testimonials.one.title">慢性失眠者</div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-indigo-200" data-i18n="landing.testimonials.one.quote">
+                        "作为一个长期失眠患者，我尝试过无数方法。SleepLink是第一个真正让我感到安心的解决方案。那种有人在身边，却不会有任何压力的感觉非常独特。最重要的是，我不再担心遇到不适当内容，可以完全放松。"
+                    </p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-opacity-10 bg-white rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="用户照片" class="w-14 h-14 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold" data-i18n="landing.testimonials.two.name">李伟</h4>
+                            <div class="text-indigo-300 text-sm" data-i18n="landing.testimonials.two.title">IT工程师</div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half"></i>
+                        </div>
+                    </div>
+                    <p class="text-indigo-200" data-i18n="landing.testimonials.two.quote">
+                        "我过去在其他社交应用上尝试过寻找语音伙伴，但经常遇到不舒适的情况。SleepLink彻底改变了这一点。它的去性别化设计让我能专注于真正重要的事情：放松和睡眠。人声胶囊功能特别棒，让我能随时得到陪伴。"
+                    </p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-opacity-10 bg-white rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="用户照片" class="w-14 h-14 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold" data-i18n="landing.testimonials.three.name">张晓华</h4>
+                            <div class="text-indigo-300 text-sm" data-i18n="landing.testimonials.three.title">心理咨询师</div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-indigo-200" data-i18n="landing.testimonials.three.quote">
+                        "作为心理咨询师，我经常向我的失眠患者推荐SleepLink。这款应用精准抓住了睡眠与人际连接的关键联系，同时解决了安全顾虑。我特别喜欢它的任务导向式破冰设计，这让我的患者能更自然地建立连接。"
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-16">
+                <div class="text-center mb-10">
+                    <h3 class="text-2xl font-bold mb-4" data-i18n="landing.partners.title">受到行业认可</h3>
+                </div>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png" alt="Microsoft" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png" alt="Apple" class="h-10 opacity-50 hover:opacity-100 transition-opacity">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png" alt="Google" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png" alt="Amazon" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png" alt="Netflix" class="h-6 opacity-50 hover:opacity-100 transition-opacity">
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center">
+                <a href="#waiting-list" class="cta-button py-3 px-8 rounded-full text-white font-semibold text-lg shadow-lg inline-flex items-center" data-i18n="landing.testimonials.cta">
+                    <i class="fas fa-user-plus mr-2"></i> 加入先行体验名单
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section class="py-20 gradient-bg">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-6" data-i18n="landing.howItWorks.title">
+                    简单易用，三步开启安心睡眠
+                </h2>
+                <p class="text-xl text-indigo-200 max-w-3xl mx-auto" data-i18n="landing.howItWorks.subtitle">
+                    SleepLink设计简洁直观，让您无需复杂操作即可享受高质量伴睡体验
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row">
+                    <div class="flex-1 relative pb-16 md:pb-0 md:pr-8">
+                        <div class="z-10 relative">
+                            <div class="w-16 h-16 rounded-full bg-purple-500 flex items-center justify-center mb-6 mx-auto md:mx-0">
+                                <span class="text-2xl font-bold text-white">1</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 text-center md:text-left" data-i18n="landing.howItWorks.step1.title">
+                                创建安全账户
+                            </h3>
+                            <p class="text-indigo-200 text-center md:text-left" data-i18n="landing.howItWorks.step1.description">
+                                完成基础认证（手机号+声纹）或深度认证（加入人脸），选择您喜欢的兴趣标签，设置个性化虚拟形象。
+                            </p>
+                        </div>
+                        <div class="absolute top-0 bottom-0 left-1/2 md:left-auto md:right-0 w-px bg-purple-500 md:w-8 md:h-px md:top-8"></div>
+                    </div>
+                    
+                    <div class="flex-1 relative pb-16 md:pb-0 md:px-8">
+                        <div class="z-10 relative">
+                            <div class="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center mb-6 mx-auto md:mx-0">
+                                <span class="text-2xl font-bold text-white">2</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 text-center md:text-left" data-i18n="landing.howItWorks.step2.title">
+                                选择互动模式
+                            </h3>
+                            <p class="text-indigo-200 text-center md:text-left" data-i18n="landing.howItWorks.step2.description">
+                                可选择实时匹配（与真人/AI连接）、人声胶囊（异步语音陪伴）或冥想向导（引导式放松体验）。
+                            </p>
+                        </div>
+                        <div class="absolute top-0 bottom-0 left-1/2 md:left-auto md:right-0 w-px bg-blue-500 md:w-8 md:h-px md:top-8"></div>
+                    </div>
+                    
+                    <div class="flex-1 relative md:pl-8">
+                        <div class="z-10 relative">
+                            <div class="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center mb-6 mx-auto md:mx-0">
+                                <span class="text-2xl font-bold text-white">3</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 text-center md:text-left" data-i18n="landing.howItWorks.step3.title">
+                                享受安心入眠
+                            </h3>
+                            <p class="text-indigo-200 text-center md:text-left" data-i18n="landing.howItWorks.step3.description">
+                                置手机于床头，智能戒指会自动追踪您的睡眠状态，系统根据生物节律调整互动强度，直到您安稳入睡。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-16 text-center">
+                    <div class="inline-block bg-opacity-20 bg-white rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold mb-6" data-i18n="landing.betaPrice.title">
+                            抢先体验内测版限时优惠
+                        </h3>
+                        <div class="text-5xl font-bold gradient-text mb-6">¥0</div>
+                        <p class="text-indigo-200 mb-6" data-i18n="landing.betaPrice.description">
+                            内测期间完全免费，正式版发布后将享受50%的永久折扣
+                        </p>
+                        <a href="#waiting-list" class="cta-button py-3 px-8 rounded-full text-white font-semibold text-lg shadow-lg inline-flex items-center" data-i18n="landing.betaPrice.cta">
+                            <i class="fas fa-gift mr-2"></i> 抢占内测名额
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Screenshots Section -->
+    <section id="app-demo" class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-6" data-i18n="landing.screenshots.title">
+                    抢先预览 - SleepLink界面展示
+                </h2>
+                <p class="text-xl text-indigo-200 max-w-3xl mx-auto" data-i18n="landing.screenshots.subtitle">
+                    探索SleepLink的精心设计界面，体验宇宙级睡眠陪伴
+                </p>
+            </div>
+            
+            <div class="tab-nav mb-8 flex justify-center space-x-4">
+                <button class="py-2 px-6 rounded-full bg-purple-600 text-white font-semibold text-sm" data-screen="home" data-i18n="landing.screenshots.tab1">
+                    匹配页面
+                </button>
+                <button class="py-2 px-6 rounded-full bg-opacity-20 bg-white text-white font-semibold text-sm" data-screen="virtual-room" data-i18n="landing.screenshots.tab2">
+                    虚拟共生舱
+                </button>
+                <button class="py-2 px-6 rounded-full bg-opacity-20 bg-white text-white font-semibold text-sm" data-screen="profile" data-i18n="landing.screenshots.tab3">
+                    个人配置
+                </button>
+                <button class="py-2 px-6 rounded-full bg-opacity-20 bg-white text-white font-semibold text-sm" data-screen="voice-capsule" data-i18n="landing.screenshots.tab4">
+                    声音胶囊
+                </button>
+            </div>
+            
+            <div class="flex justify-center">
+                <div class="phone-mockup">
+                    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+                        <span>9:41</span>
+                        <div class="flex space-x-1">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+                    <div class="phone-screen">
+                        <iframe id="app-screen" src="home.html" class="w-full h-full border-none"></iframe>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="home.html" target="_blank" class="cta-button py-3 px-8 rounded-full text-white font-semibold text-lg shadow-lg inline-flex items-center" data-i18n="landing.screenshots.cta">
+                    <i class="fas fa-external-link-alt mr-2"></i> 体验完整App Demo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 gradient-bg">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-6" data-i18n="landing.faq.title">
+                    常见问题解答
+                </h2>
+                <p class="text-xl text-indigo-200 max-w-3xl mx-auto" data-i18n="landing.faq.subtitle">
+                    了解更多关于SleepLink如何帮助您获得更好的睡眠体验
+                </p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto" x-data="{selected:null}">
+                <div class="mb-4">
+                    <button 
+                        @click="selected !== 1 ? selected = 1 : selected = null"
+                        class="flex justify-between items-center w-full p-5 rounded-xl bg-opacity-10 bg-white focus:outline-none"
+                    >
+                        <span class="text-lg font-semibold" data-i18n="landing.faq.q1">SleepLink如何保证用户安全和内容纯净？</span>
+                        <i class="fas" :class="{'fa-chevron-down': selected !== 1, 'fa-chevron-up': selected === 1}"></i>
+                    </button>
+                    <div x-show="selected === 1" class="mt-2 p-5 bg-opacity-5 bg-white rounded-xl" x-transition>
+                        <p class="text-indigo-200" data-i18n="landing.faq.a1">
+                            SleepLink采用三重安全机制：1）多层次身份验证，包括手机号、声纹和选择性人脸认证；2）AI声纹防火墙实时监测不当内容，自动干预可疑行为；3）去性别化社交设计，从根本上减少不适当互动可能。此外，用户可以随时激活"陨石护盾"功能举报内容，系统会立即处理并隔离可疑用户。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <button 
+                        @click="selected !== 2 ? selected = 2 : selected = null"
+                        class="flex justify-between items-center w-full p-5 rounded-xl bg-opacity-10 bg-white focus:outline-none"
+                    >
+                        <span class="text-lg font-semibold" data-i18n="landing.faq.q2">我是否需要购买智能戒指才能使用SleepLink？</span>
+                        <i class="fas" :class="{'fa-chevron-down': selected !== 2, 'fa-chevron-up': selected === 2}"></i>
+                    </button>
+                    <div x-show="selected === 2" class="mt-2 p-5 bg-opacity-5 bg-white rounded-xl" x-transition>
+                        <p class="text-indigo-200" data-i18n="landing.faq.a2">
+                            不，智能戒指是可选的增强配件。SleepLink的基础功能可以单独使用手机完成，包括匹配、连麦和声音胶囊等核心功能。智能戒指提供更精准的生物数据采集，让匹配和互动更加个性化，但这完全是可选的高级体验。我们提供多种价位的智能戒指选择，也支持与部分主流智能手表和健康手环兼容。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <button 
+                        @click="selected !== 3 ? selected = 3 : selected = null"
+                        class="flex justify-between items-center w-full p-5 rounded-xl bg-opacity-10 bg-white focus:outline-none"
+                    >
+                        <span class="text-lg font-semibold" data-i18n="landing.faq.q3">SleepLink是约会应用吗？如何避免被滥用？</span>
+                        <i class="fas" :class="{'fa-chevron-down': selected !== 3, 'fa-chevron-up': selected === 3}"></i>
+                    </button>
+                    <div x-show="selected === 3" class="mt-2 p-5 bg-opacity-5 bg-white rounded-xl" x-transition>
+                        <p class="text-indigo-200" data-i18n="landing.faq.a3">
+                            SleepLink明确定位为睡眠辅助应用，而非社交或约会平台。我们采取多项措施确保这一定位：1）用户在注册时需签署睡眠公约，明确使用目的；2）虚拟形象系统和去性别化设计减少外貌因素影响；3）任务导向型互动替代自由聊天，保持互动的目的性；4）违规行为将影响用户的"纯净指数"，严重者将被永久禁止使用服务。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <button 
+                        @click="selected !== 4 ? selected = 4 : selected = null"
+                        class="flex justify-between items-center w-full p-5 rounded-xl bg-opacity-10 bg-white focus:outline-none"
+                    >
+                        <span class="text-lg font-semibold" data-i18n="landing.faq.q4">SleepLink与市面上的ASMR或白噪音应用有何不同？</span>
+                        <i class="fas" :class="{'fa-chevron-down': selected !== 4, 'fa-chevron-up': selected === 4}"></i>
+                    </button>
+                    <div x-show="selected === 4" class="mt-2 p-5 bg-opacity-5 bg-white rounded-xl" x-transition>
+                        <p class="text-indigo-200" data-i18n="landing.faq.a4">
+                            传统ASMR和白噪音应用提供预录制的单向内容，而SleepLink创造了双向互动体验。通过真人连接或高度个性化的AI，SleepLink模拟真实人类陪伴感，解决睡前孤独问题。我们的系统根据您的生物反馈实时调整，例如检测到您呼吸紊乱时，会自动调整内容节奏帮助您平静。此外，任务导向式破冰和去性别化设计是我们独创的功能。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <button 
+                        @click="selected !== 5 ? selected = 5 : selected = null"
+                        class="flex justify-between items-center w-full p-5 rounded-xl bg-opacity-10 bg-white focus:outline-none"
+                    >
+                        <span class="text-lg font-semibold" data-i18n="landing.faq.q5">SleepLink的订阅费用是多少？有免费版本吗？</span>
+                        <i class="fas" :class="{'fa-chevron-down': selected !== 5, 'fa-chevron-up': selected === 5}"></i>
+                    </button>
+                    <div x-show="selected === 5" class="mt-2 p-5 bg-opacity-5 bg-white rounded-xl" x-transition>
+                        <p class="text-indigo-200" data-i18n="landing.faq.a5">
+                            SleepLink提供免费版和高级版两种选择。免费版包含基础匹配功能和有限的AI伴睡时长，足以让您体验核心价值。高级订阅（月付28元/年付228元）解锁无限AI伴睡、优先真人匹配、高级声音胶囊和更多互动任务。目前内测阶段，所有功能完全免费，正式发布后，内测用户将获得50%的永久折扣特权。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waiting List Section -->
+    <section id="waiting-list" class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-opacity-10 bg-white rounded-2xl p-8 lg:p-12 text-center">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text" data-i18n="landing.waitingList.title">
+                        抢先体验内测资格，赢在起跑线！
+                    </h2>
+                    <p class="text-xl text-indigo-200 mb-8 max-w-2xl mx-auto" data-i18n="landing.waitingList.subtitle">
+                        加入SleepLink独家内测等待列表，第一时间获取内测邀请码、限量福利和专属优惠！名额有限，立即加入！
+                    </p>
+                    
+                    <form class="max-w-md mx-auto mb-10">
+                        <div class="mb-4">
+                            <input type="email" placeholder="您的邮箱地址" class="w-full py-3 px-4 rounded-lg bg-white bg-opacity-10 text-white placeholder-indigo-300 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500" required data-i18n-placeholder="landing.waitingList.email">
+                        </div>
+                        <div class="mb-6">
+                            <input type="text" placeholder="您的姓名（选填）" class="w-full py-3 px-4 rounded-lg bg-white bg-opacity-10 text-white placeholder-indigo-300 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500" data-i18n-placeholder="landing.waitingList.name">
+                        </div>
+                        <button type="submit" class="cta-button w-full py-3 px-8 rounded-lg text-white font-semibold text-lg shadow-lg flex items-center justify-center" data-i18n="landing.waitingList.submit">
+                            <i class="fas fa-rocket mr-2"></i> 立即加入等待名单
+                        </button>
+                    </form>
+                    
+                    <div class="text-indigo-300 text-sm" data-i18n="landing.waitingList.privacy">
+                        我们重视您的隐私，您的信息不会被分享给任何第三方。
+                    </div>
+                    
+                    <div class="mt-10 flex flex-col md:flex-row items-center justify-center gap-8">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center mr-4">
+                                <i class="fas fa-gift text-white text-xl"></i>
+                            </div>
+                            <div class="text-left">
+                                <div class="font-bold" data-i18n="landing.waitingList.perk1.title">内测专属福利</div>
+                                <div class="text-indigo-300 text-sm" data-i18n="landing.waitingList.perk1.description">正式版50%永久折扣</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mr-4">
+                                <i class="fas fa-comment-alt text-white text-xl"></i>
+                            </div>
+                            <div class="text-left">
+                                <div class="font-bold" data-i18n="landing.waitingList.perk2.title">直接反馈渠道</div>
+                                <div class="text-indigo-300 text-sm" data-i18n="landing.waitingList.perk2.description">影响产品未来发展</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center mr-4">
+                                <i class="fas fa-crown text-white text-xl"></i>
+                            </div>
+                            <div class="text-left">
+                                <div class="font-bold" data-i18n="landing.waitingList.perk3.title">创始用户标识</div>
+                                <div class="text-indigo-300 text-sm" data-i18n="landing.waitingList.perk3.description">专属头像框和虚拟礼物</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YouTube Video Stream Section -->
+    <section class="py-20 gradient-bg">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-6" data-i18n="landing.videos.title">
+                    用户真实案例 - 看SleepLink如何改变睡眠体验
+                </h2>
+                <p class="text-xl text-indigo-200 max-w-3xl mx-auto" data-i18n="landing.videos.subtitle">
+                    了解真实用户使用SleepLink前后的睡眠质量变化
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="bg-opacity-10 bg-white rounded-2xl overflow-hidden">
+                    <div class="aspect-video w-full">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2" data-i18n="landing.videos.video1.title">SleepLink功能演示 - 一分钟了解核心功能</h3>
+                        <p class="text-indigo-200" data-i18n="landing.videos.video1.description">快速了解SleepLink如何通过安全匹配和虚拟共生舱保障伴睡体验</p>
+                    </div>
+                </div>
+                
+                <div class="bg-opacity-10 bg-white rounded-2xl overflow-hidden">
+                    <div class="aspect-video w-full">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2" data-i18n="landing.videos.video2.title">睡眠专家评测 - SleepLink科学原理解析</h3>
+                        <p class="text-indigo-200" data-i18n="landing.videos.video2.description">知名睡眠专家张教授解析SleepLink背后的睡眠科学原理</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="https://www.youtube.com/channel/UC0123456789" target="_blank" class="py-3 px-8 rounded-full bg-white bg-opacity-10 text-white font-semibold text-lg hover:bg-opacity-20 transition duration-300 inline-flex items-center" data-i18n="landing.videos.cta">
+                    <i class="fab fa-youtube mr-2 text-red-500"></i> 查看更多视频
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Twitter Feed Stream Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-6" data-i18n="landing.twitter.title">
+                    用户口碑 - Twitter实时热议SleepLink
+                </h2>
+                <p class="text-xl text-indigo-200 max-w-3xl mx-auto" data-i18n="landing.twitter.subtitle">
+                    看看用户们在社交媒体上分享的真实体验
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="bg-opacity-10 bg-white rounded-2xl p-6">
+                    <div class="flex items-start mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Twitter用户" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <div class="font-bold">Sarah Johnson</div>
+                            <div class="text-indigo-300 text-sm">@sarah_j</div>
+                        </div>
+                    </div>
+                    <p class="text-indigo-200 mb-4">
+                        SleepLink彻底改变了我的睡眠体验！以前经常要花1小时才能入睡，现在只需15分钟。最喜欢的是安全设计，终于不用担心奇怪的声音了 😴✨ #BetterSleep #SleepLink
+                    </p>
+                    <div class="text-indigo-300 text-sm">3小时前</div>
+                </div>
+                
+                <div class="bg-opacity-10 bg-white rounded-2xl p-6">
+                    <div class="flex items-start mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Twitter用户" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <div class="font-bold">Mike Chen</div>
+                            <div class="text-indigo-300 text-sm">@mike_tech</div>
+                        </div>
+                    </div>
+                    <p class="text-indigo-200 mb-4">
+                        作为一个科技爱好者，我对SleepLink的生物数据同步功能印象深刻。智能戒指真的能感知我何时快睡着，然后自动调整音量和内容。未来已来！👏🚀 #SleepTech #SleepLink
+                    </p>
+                    <div class="text-indigo-300 text-sm">昨天</div>
+                </div>
+                
+                <div class="bg-opacity-10 bg-white rounded-2xl p-6">
+                    <div class="flex items-start mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/67.jpg" alt="Twitter用户" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <div class="font-bold">Dr. Emily Wong</div>
+                            <div class="text-indigo-300 text-sm">@dr_sleep</div>
+                        </div>
+                    </div>
+                    <p class="text-indigo-200 mb-4">
+                        作为睡眠医学专家，我向患者推荐了SleepLink两个月，反馈非常积极。尤其是声音胶囊功能，为不愿意实时社交的人提供了绝佳选择。科学与情感的完美结合！💫 #SleepMedicine #SleepLink
+                    </p>
+                    <div class="text-indigo-300 text-sm">2天前</div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="https://twitter.com/search?q=SleepLink" target="_blank" class="py-3 px-8 rounded-full bg-white bg-opacity-10 text-white font-semibold text-lg hover:bg-opacity-20 transition duration-300 inline-flex items-center" data-i18n="landing.twitter.cta">
+                    <i class="fab fa-twitter mr-2 text-blue-400"></i> 查看更多Twitter评价
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="py-20 gradient-bg relative overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold mb-6" data-i18n="landing.finalCta.title">
+                    告别孤独失眠，开启安心睡眠之旅
+                </h2>
+                <p class="text-xl text-indigo-200 mb-10 max-w-2xl mx-auto" data-i18n="landing.finalCta.subtitle">
+                    加入2,500+已在等待名单中的用户，抢先体验革命性的伴睡体验
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    <a href="#waiting-list" class="cta-button py-4 px-10 rounded-full text-white font-bold text-lg shadow-xl flex items-center justify-center" data-i18n="landing.finalCta.primary">
+                        <i class="fas fa-rocket mr-2"></i> 立即加入等待名单
+                    </a>
+                    <a href="#app-demo" class="py-4 px-10 rounded-full bg-white bg-opacity-10 text-white font-bold text-lg hover:bg-opacity-20 transition duration-300 flex items-center justify-center" data-i18n="landing.finalCta.secondary">
+                        <i class="fas fa-mobile-alt mr-2"></i> 体验产品演示
+                    </a>
+                </div>
+                <div class="mt-10">
+                    <div class="inline-block bg-white bg-opacity-10 rounded-full px-6 py-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt text-purple-400 mr-3"></i>
+                            <span class="text-indigo-200" data-i18n="landing.finalCta.security">所有数据均采用银行级加密技术保护</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute top-0 left-0 w-full h-full bg-opacity-20 bg-purple-800 filter blur-3xl"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 bg-opacity-30 bg-black">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                <div>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="landing.footer.about.title">关于SleepLink</h3>
+                    <p class="text-indigo-300 mb-4" data-i18n="landing.footer.about.description">
+                        SleepLink致力于通过创新技术提升全球用户的睡眠质量，打造安全、纯净的伴睡体验。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-indigo-300 hover:text-white transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-indigo-300 hover:text-white transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-indigo-300 hover:text-white transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-indigo-300 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="landing.footer.links.title">快速链接</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-indigo-300 hover:text-white transition-colors" data-i18n="landing.footer.links.features">功能介绍</a></li>
+                        <li><a href="#app-demo" class="text-indigo-300 hover:text-white transition-colors" data-i18n="landing.footer.links.demo">产品演示</a></li>
+                        <li><a href="#waiting-list" class="text-indigo-300 hover:text-white transition-colors" data-i18n="landing.footer.links.waitingList">加入等待名单</a></li>
+                        <li><a href="#" class="text-indigo-300 hover:text-white transition-colors" data-i18n="landing.footer.links.blog">睡眠科学博客</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="landing.footer.legal.title">法律信息</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-indigo-300 hover:text-white transition-colors" data-i18n="landing.footer.legal.terms">使用条款</a></li>
+                        <li><a href="#" class="text-indigo-300 hover:text-white transition-colors" data-i18n="landing.footer.legal.privacy">隐私政策</a></li>
+                        <li><a href="#" class="text-indigo-300 hover:text-white transition-colors" data-i18n="landing.footer.legal.cookies">Cookie政策</a></li>
+                        <li><a href="#" class="text-indigo-300 hover:text-white transition-colors" data-i18n="landing.footer.legal.security">安全说明</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="landing.footer.contact.title">联系我们</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-indigo-400"></i>
+                            <a href="/cdn-cgi/l/email-protection#fd8e888d8d928f89bd8e9198988d91949396d39e9290" class="text-indigo-300 hover:text-white transition-colors"><span class="__cf_email__" data-cfemail="394a4c4949564b4d794a555c5c4955505752175a5654">[email&#160;protected]</span></a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-2 text-indigo-400"></i>
+                            <span class="text-indigo-300">+86 400-888-8888</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mr-2 text-indigo-400 mt-1"></i>
+                            <span class="text-indigo-300" data-i18n="landing.footer.contact.address">北京市海淀区中关村科技园区</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-10 pt-6 border-t border-indigo-900 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-indigo-400 text-sm mb-4 md:mb-0" data-i18n="landing.footer.copyright">
+                    © 2023 SleepLink. 保留所有权利。
+                </div>
+                <div class="flex items-center">
+                    <span class="text-indigo-400 mr-4" data-i18n="landing.footer.language">语言:</span>
+                    <select id="language-selector" class="bg-opacity-10 bg-white text-indigo-200 rounded border border-indigo-800 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                        <option value="zh" selected data-i18n="landing.footer.languages.chinese">中文</option>
+                        <option value="en" data-i18n="landing.footer.languages.english">English</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // 创建随机星星
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.getElementById('stars-container');
+            
+            for(let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 随机位置
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                
+                // 随机大小
+                const size = Math.random() * 3;
+                
+                // 随机动画延迟
+                const delay = Math.random() * 4;
+                
+                star.style.top = `${top}%`;
+                star.style.left = `${left}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+            
+            // 切换应用截图标签
+            const tabButtons = document.querySelectorAll('.tab-nav button');
+            const appScreen = document.getElementById('app-screen');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有活跃状态
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('bg-purple-600');
+                        btn.classList.add('bg-opacity-20', 'bg-white');
+                    });
+                    
+                    // 添加活跃状态
+                    this.classList.remove('bg-opacity-20', 'bg-white');
+                    this.classList.add('bg-purple-600');
+                    
+                    // 切换iframe源
+                    const screen = this.getAttribute('data-screen');
+                    appScreen.src = `${screen}.html`;
+                });
+            });
+            
+            // 设置默认活跃标签
+            tabButtons[0].classList.remove('bg-opacity-20', 'bg-white');
+            tabButtons[0].classList.add('bg-purple-600');
+            
+            // 处理语言切换
+            const languageSelector = document.getElementById('language-selector');
+            
+            languageSelector.addEventListener('change', function() {
+                const selectedLanguage = this.value;
+                loadTranslations(selectedLanguage);
+            });
+            
+            // 初始加载中文翻译
+            loadTranslations('zh');
+        });
+        
+        // 加载翻译文件
+        function loadTranslations(lang) {
+            fetch(`i18n/${lang}.json`)
+                .then(response => response.json())
+                .then(data => {
+                    applyTranslations(data);
+                })
+                .catch(error => {
+                    console.error('Error loading translations:', error);
+                });
+        }
+        
+        // 应用翻译
+        function applyTranslations(translations) {
+            // 处理data-i18n属性的元素
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (getNestedTranslation(translations, key)) {
+                    element.textContent = getNestedTranslation(translations, key);
+                }
+            });
+            
+            // 处理placeholder的翻译
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (getNestedTranslation(translations, key)) {
+                    element.placeholder = getNestedTranslation(translations, key);
+                }
+            });
+            
+            // 设置文档标题
+            if (translations.app && translations.app.title) {
+                document.title = translations.app.title;
+            }
+        }
+        
+        // 获取嵌套的翻译值
+        function getNestedTranslation(obj, path) {
+            return path.split('.').reduce((prev, curr) => {
+                return prev ? prev[curr] : null;
+            }, obj);
+        }
+    </script>
 </body>
-
 </html>

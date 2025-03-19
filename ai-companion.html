@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleepLink - AI伴睡助手</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #050A1F;
+            color: #E0E7FF;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .galaxy-bg {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-bar {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(159, 122, 234, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(159, 122, 234, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(159, 122, 234, 0); }
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        .breathe {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        
+        .waveform {
+            display: flex;
+            align-items: center;
+            height: 60px;
+        }
+        
+        .waveform-bar {
+            width: 3px;
+            background-color: #9F7AEA;
+            margin: 0 1px;
+            border-radius: 1px;
+        }
+        
+        @keyframes wave {
+            0% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+            100% { transform: scaleY(0.3); }
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            margin-bottom: 12px;
+        }
+        
+        .user-message {
+            background-color: rgba(159, 122, 234, 0.2);
+            border-radius: 18px 18px 4px 18px;
+            padding: 10px 14px;
+            align-self: flex-end;
+        }
+        
+        .ai-message {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 18px 18px 18px 4px;
+            padding: 10px 14px;
+            align-self: flex-start;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 星空背景 -->
+    <div class="galaxy-bg" id="stars-container"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+        <span>9:41</span>
+        <div class="flex space-x-1">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="flex-1 overflow-hidden flex flex-col p-5">
+        <!-- 顶部导航 -->
+        <div class="flex justify-between items-center mb-6">
+            <button onclick="goBack()" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-arrow-left text-indigo-300"></i>
+            </button>
+            <h1 class="text-xl font-bold">AI伴睡助手</h1>
+            <div class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <i class="fas fa-cog text-indigo-300"></i>
+            </div>
+        </div>
+        
+        <!-- AI助手信息 -->
+        <div class="bg-opacity-20 bg-indigo-900 rounded-2xl p-4 mb-6">
+            <div class="flex items-center">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-teal-400 flex items-center justify-center mr-4 breathe">
+                    <i class="fas fa-robot text-white text-xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="font-bold text-lg">深海静谧</h2>
+                    <div class="text-indigo-300 text-sm">智能AI伴睡助手 • 伴您安稳入睡</div>
+                    <div class="flex items-center mt-1">
+                        <div class="w-2 h-2 rounded-full bg-green-400 mr-1"></div>
+                        <span class="text-green-400 text-xs">已同步您的生物节律</span>
+                    </div>
+                </div>
+                <div class="text-xs text-indigo-300">
+                    <div class="flex flex-col items-end">
+                        <span class="font-bold text-base">28次</span>
+                        <span>伴睡记录</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 聊天内容区 -->
+        <div class="flex-1 overflow-y-auto mb-4 px-2">
+            <div class="flex flex-col">
+                <!-- 系统消息 -->
+                <div class="text-center text-xs text-indigo-400 my-4">
+                    今天 9:41 PM
+                </div>
+                
+                <!-- AI消息 -->
+                <div class="flex items-end mb-4">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-teal-400 flex items-center justify-center mr-2">
+                        <i class="fas fa-robot text-white text-xs"></i>
+                    </div>
+                    <div class="message-bubble ai-message">
+                        <p>晚上好，我是您的AI伴睡助手"深海静谧"。我已经从您的智能戒指获取了生物节律数据，您今天似乎有些疲惫。需要我做些什么来帮助您入睡呢？</p>
+                    </div>
+                </div>
+                
+                <!-- 用户消息 -->
+                <div class="flex items-end justify-end mb-4">
+                    <div class="message-bubble user-message">
+                        <p>今天工作很累，有点焦虑，睡不着</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-full overflow-hidden ml-2">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <!-- AI消息 -->
+                <div class="flex items-end mb-4">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-teal-400 flex items-center justify-center mr-2">
+                        <i class="fas fa-robot text-white text-xs"></i>
+                    </div>
+                    <div class="message-bubble ai-message">
+                        <p>我理解您的感受。焦虑确实会影响睡眠质量。我可以提供一些深海白噪音，配合缓慢的呼吸节奏，帮助您放松身心。此外，我还可以为您朗读一些平静的内容，或者引导您进行一次简短的冥想。您更喜欢哪种方式？</p>
+                    </div>
+                </div>
+                
+                <!-- 用户消息 -->
+                <div class="flex items-end justify-end mb-4">
+                    <div class="message-bubble user-message">
+                        <p>深海白噪音听起来不错</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-full overflow-hidden ml-2">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <!-- AI消息 -->
+                <div class="flex items-end mb-4">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-teal-400 flex items-center justify-center mr-2">
+                        <i class="fas fa-robot text-white text-xs"></i>
+                    </div>
+                    <div class="message-bubble ai-message">
+                        <p>好的，我现在开始播放深海白噪音。这是模拟了海洋深处3000米的环境声音，水压和微妙的洋流变化会创造出独特的声音质感。请闭上眼睛，想象自己漂浮在深海中，周围是柔和的蓝光和轻柔的水流...</p>
+                        <div class="mt-2 flex items-center">
+                            <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center mr-2">
+                                <i class="fas fa-play text-white text-xs"></i>
+                            </div>
+                            <div class="text-xs">深海白噪音 - 正在播放</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 系统消息 -->
+                <div class="text-center text-xs text-indigo-400 my-4">
+                    AI助手正在根据您的呼吸频率调整音频节奏
+                </div>
+                
+                <!-- AI消息 -->
+                <div class="flex items-end mb-4">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-teal-400 flex items-center justify-center mr-2">
+                        <i class="fas fa-robot text-white text-xs"></i>
+                    </div>
+                    <div class="message-bubble ai-message">
+                        <p>我注意到您的呼吸频率正在减慢，这是个好现象，表明您正在放松。我已经相应地调整了音频节奏。让我们继续保持这种状态，慢慢地感受每一次呼吸...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 语音波形 -->
+        <div class="waveform mb-4 justify-center">
+            <div class="waveform-bar h-10" style="animation: wave 1.1s infinite; animation-delay: 0.1s"></div>
+            <div class="waveform-bar h-16" style="animation: wave 1.3s infinite; animation-delay: 0.2s"></div>
+            <div class="waveform-bar h-24" style="animation: wave 1.5s infinite; animation-delay: 0.3s"></div>
+            <div class="waveform-bar h-32" style="animation: wave 1.7s infinite; animation-delay: 0.4s"></div>
+            <div class="waveform-bar h-40" style="animation: wave 1.9s infinite; animation-delay: 0.5s"></div>
+            <div class="waveform-bar h-48" style="animation: wave 2.1s infinite; animation-delay: 0.6s"></div>
+            <div class="waveform-bar h-40" style="animation: wave 1.9s infinite; animation-delay: 0.7s"></div>
+            <div class="waveform-bar h-32" style="animation: wave 1.7s infinite; animation-delay: 0.8s"></div>
+            <div class="waveform-bar h-24" style="animation: wave 1.5s infinite; animation-delay: 0.9s"></div>
+            <div class="waveform-bar h-16" style="animation: wave 1.3s infinite; animation-delay: 1.0s"></div>
+            <div class="waveform-bar h-10" style="animation: wave 1.1s infinite; animation-delay: 1.1s"></div>
+        </div>
+        
+        <!-- 底部输入区 -->
+        <div class="flex items-center">
+            <button class="w-12 h-12 rounded-full bg-white bg-opacity-10 flex items-center justify-center mr-3">
+                <i class="fas fa-wind text-indigo-300"></i>
+            </button>
+            
+            <div class="flex-1 bg-white bg-opacity-10 rounded-full px-5 py-3 flex items-center">
+                <i class="fas fa-microphone text-indigo-300 mr-3"></i>
+                <input type="text" placeholder="使用语音或输入文字..." class="bg-transparent flex-1 text-white placeholder-indigo-300 focus:outline-none">
+                <i class="fas fa-paper-plane text-indigo-300 ml-3"></i>
+            </div>
+            
+            <button class="w-12 h-12 rounded-full bg-white bg-opacity-10 flex items-center justify-center ml-3">
+                <i class="fas fa-times text-indigo-300"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 底部标签栏 -->
+    <div class="tab-bar h-16 flex justify-between items-center px-6">
+        <a href="home.html" class="flex flex-col items-center">
+            <i class="fas fa-home text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">首页</span>
+        </a>
+        <a href="virtual-room.html" class="flex flex-col items-center">
+            <i class="fas fa-globe text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">虚拟舱</span>
+        </a>
+        <div class="relative">
+            <button class="w-14 h-14 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center -mt-5 shadow-lg">
+                <i class="fas fa-headphones-alt text-white text-xl"></i>
+            </button>
+        </div>
+        <a href="voice-capsule.html" class="flex flex-col items-center">
+            <i class="fas fa-capsules text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">声音库</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center">
+            <i class="fas fa-user text-indigo-400"></i>
+            <span class="text-xs mt-1 text-indigo-400">我的</span>
+        </a>
+    </div>
+
+    <script>
+        // 创建随机星星
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.getElementById('stars-container');
+            
+            for(let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 随机位置
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                
+                // 随机大小
+                const size = Math.random() * 2 + 1;
+                
+                // 随机透明度
+                const opacity = Math.random() * 0.5 + 0.5;
+                
+                star.style.top = `${top}%`;
+                star.style.left = `${left}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.opacity = opacity;
+                
+                starsContainer.appendChild(star);
+            }
+        });
+        
+        function goBack() {
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>
