@@ -174,7 +174,7 @@
                                 </div>
                             </div>
                             <div class="phone-screen">
-                                <img src="https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="SleepLink App" class="w-full h-full object-cover">
+                                <img src="home.html" alt="SleepLink App" class="w-full h-full object-cover">
                             </div>
                         </div>
                     </div>
@@ -268,7 +268,7 @@
                 <!-- Feature 1 -->
                 <div class="feature-card rounded-2xl overflow-hidden">
                     <div class="aspect-video relative">
-                        <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="安全匹配系统" class="w-full h-full object-cover">
+                        <img src="match-interface.html" alt="安全匹配系统" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
                         <div class="absolute bottom-4 left-4">
                             <span class="bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full" data-i18n="landing.features.one.badge">
@@ -285,7 +285,7 @@
                         </p>
                         <div class="mt-4">
                             <div class="overflow-hidden rounded-lg">
-                                <img src="https://images.unsplash.com/photo-1580130379624-3a069adbffc5?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="安全匹配系统演示" class="w-full transform hover:scale-105 transition duration-500">
+                                <img src="match-preferences.html" alt="安全匹配系统演示" class="w-full transform hover:scale-105 transition duration-500">
                             </div>
                         </div>
                     </div>
@@ -294,7 +294,7 @@
                 <!-- Feature 2 -->
                 <div class="feature-card rounded-2xl overflow-hidden">
                     <div class="aspect-video relative">
-                        <img src="https://images.unsplash.com/photo-1535954741780-a614306bef5a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="虚拟共生舱" class="w-full h-full object-cover">
+                        <img src="virtual-room.html" alt="虚拟共生舱" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
                         <div class="absolute bottom-4 left-4">
                             <span class="bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full" data-i18n="landing.features.two.badge">
@@ -311,9 +311,7 @@
                         </p>
                         <div class="mt-4">
                             <div class="overflow-hidden rounded-lg">
-                                <video autoplay loop muted playsinline class="w-full transform hover:scale-105 transition duration-500">
-                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-blue-glowing-jellyfish-in-the-deep-28336-large.mp4" type="video/mp4">
-                                </video>
+                                <img src="task-completion.html" alt="共鸣任务完成" class="w-full transform hover:scale-105 transition duration-500">
                             </div>
                         </div>
                     </div>
@@ -322,7 +320,7 @@
                 <!-- Feature 3 -->
                 <div class="feature-card rounded-2xl overflow-hidden">
                     <div class="aspect-video relative">
-                        <img src="https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="人声胶囊银行" class="w-full h-full object-cover">
+                        <img src="voice-capsule.html" alt="人声胶囊银行" class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
                         <div class="absolute bottom-4 left-4">
                             <span class="bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-full" data-i18n="landing.features.three.badge">
@@ -339,18 +337,47 @@
                         </p>
                         <div class="mt-4">
                             <div class="overflow-hidden rounded-lg">
-                                <video autoplay loop muted playsinline class="w-full transform hover:scale-105 transition duration-500">
-                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-waves-coming-to-the-shore-5016-large.mp4" type="video/mp4">
-                                </video>
+                                <img src="capsule-details.html" alt="声音胶囊详情" class="w-full transform hover:scale-105 transition duration-500">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
+            <div class="flex justify-center">
+                <div class="phone-mockup">
+                    <div class="status-bar flex justify-between items-center px-5 text-xs text-gray-400">
+                        <span>9:41</span>
+                        <div class="flex space-x-1">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+                    <div class="phone-screen">
+                        <img src="virtual-room.html" alt="SleepLink App" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-nav mb-8 flex justify-center space-x-4">
+                <button class="py-2 px-6 rounded-full bg-purple-600 text-white font-semibold text-sm" data-screen="home" data-i18n="landing.screenshots.tab1">
+                    匹配页面
+                </button>
+                <button class="py-2 px-6 rounded-full bg-opacity-20 bg-white text-white font-semibold text-sm" data-screen="virtual-room" data-i18n="landing.screenshots.tab2">
+                    虚拟共生舱
+                </button>
+                <button class="py-2 px-6 rounded-full bg-opacity-20 bg-white text-white font-semibold text-sm" data-screen="profile" data-i18n="landing.screenshots.tab3">
+                    个人配置
+                </button>
+                <button class="py-2 px-6 rounded-full bg-opacity-20 bg-white text-white font-semibold text-sm" data-screen="voice-capsule" data-i18n="landing.screenshots.tab4">
+                    声音胶囊
+                </button>
+            </div>
+            
             <div class="text-center mt-12">
-                <a href="#app-demo" class="cta-button py-3 px-8 rounded-full text-white font-semibold text-lg shadow-lg inline-flex items-center" data-i18n="landing.features.cta">
-                    <i class="fas fa-mobile-alt mr-2"></i> 查看全部功能演示
+                <a href="home.html" target="_blank" class="py-3 px-8 rounded-full bg-white bg-opacity-10 text-white font-semibold text-lg hover:bg-opacity-20 transition duration-300 inline-flex items-center" data-i18n="landing.screenshots.cta">
+                    <i class="fas fa-external-link-alt mr-2"></i> 体验完整App Demo
                 </a>
             </div>
         </div>
@@ -648,7 +675,7 @@
             </div>
             
             <div class="tab-nav mb-8 flex justify-center space-x-4">
-                <button class="py-2 px-6 rounded-full bg-purple-600 text-white font-semibold text-sm" data-screen="home" data-i18n="landing.screenshots.tab1">
+                <button class="py-2 px-6 rounded-full bg-purple-600 text-white font-semibold text-sm" data-screen="match-interface" data-i18n="landing.screenshots.tab1">
                     匹配页面
                 </button>
                 <button class="py-2 px-6 rounded-full bg-opacity-20 bg-white text-white font-semibold text-sm" data-screen="virtual-room" data-i18n="landing.screenshots.tab2">
@@ -673,13 +700,13 @@
                         </div>
                     </div>
                     <div class="phone-screen">
-                        <iframe id="app-screen" src="home.html" class="w-full h-full border-none"></iframe>
+                        <img src="match-interface.html" alt="SleepLink App" class="w-full h-full object-cover">
                     </div>
                 </div>
             </div>
             
             <div class="text-center mt-12">
-                <a href="home.html" target="_blank" class="cta-button py-3 px-8 rounded-full text-white font-semibold text-lg shadow-lg inline-flex items-center" data-i18n="landing.screenshots.cta">
+                <a href="home.html" target="_blank" class="py-3 px-8 rounded-full bg-white bg-opacity-10 text-white font-semibold text-lg hover:bg-opacity-20 transition duration-300 inline-flex items-center" data-i18n="landing.screenshots.cta">
                     <i class="fas fa-external-link-alt mr-2"></i> 体验完整App Demo
                 </a>
             </div>
@@ -796,7 +823,7 @@
                         <div class="mb-6">
                             <input type="text" placeholder="您的姓名（选填）" class="w-full py-3 px-4 rounded-lg bg-white bg-opacity-10 text-white placeholder-indigo-300 border border-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-500" data-i18n-placeholder="landing.waitingList.name">
                         </div>
-                        <button type="submit" class="cta-button w-full py-3 px-8 rounded-lg text-white font-semibold text-lg shadow-lg flex items-center justify-center" data-i18n="landing.waitingList.submit">
+                        <button type="submit" class="cta-button w-full py-3 px-8 rounded-lg text-white font-semibold text-lg shadow-lg inline-flex items-center" data-i18n="landing.waitingList.submit">
                             <i class="fas fa-rocket mr-2"></i> 立即加入等待名单
                         </button>
                     </form>
@@ -810,7 +837,7 @@
                             <div class="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center mr-4">
                                 <i class="fas fa-gift text-white text-xl"></i>
                             </div>
-                            <div class="text-left">
+                            <div>
                                 <div class="font-bold" data-i18n="landing.waitingList.perk1.title">内测专属福利</div>
                                 <div class="text-indigo-300 text-sm" data-i18n="landing.waitingList.perk1.description">正式版50%永久折扣</div>
                             </div>
@@ -819,7 +846,7 @@
                             <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mr-4">
                                 <i class="fas fa-comment-alt text-white text-xl"></i>
                             </div>
-                            <div class="text-left">
+                            <div>
                                 <div class="font-bold" data-i18n="landing.waitingList.perk2.title">直接反馈渠道</div>
                                 <div class="text-indigo-300 text-sm" data-i18n="landing.waitingList.perk2.description">影响产品未来发展</div>
                             </div>
@@ -828,7 +855,7 @@
                             <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center mr-4">
                                 <i class="fas fa-crown text-white text-xl"></i>
                             </div>
-                            <div class="text-left">
+                            <div>
                                 <div class="font-bold" data-i18n="landing.waitingList.perk3.title">创始用户标识</div>
                                 <div class="text-indigo-300 text-sm" data-i18n="landing.waitingList.perk3.description">专属头像框和虚拟礼物</div>
                             </div>
@@ -1026,7 +1053,7 @@
                     <ul class="space-y-2">
                         <li class="flex items-center">
                             <i class="fas fa-envelope mr-2 text-indigo-400"></i>
-                            <a href="/cdn-cgi/l/email-protection#fd8e888d8d928f89bd8e9198988d91949396d39e9290" class="text-indigo-300 hover:text-white transition-colors"><span class="__cf_email__" data-cfemail="394a4c4949564b4d794a555c5c4955505752175a5654">[email&#160;protected]</span></a>
+                            <a href="/cdn-cgi/l/email-protection#295a5c5959465b5d695a454c4c5945404742074a4644" class="text-indigo-300 hover:text-white transition-colors"><span class="__cf_email__" data-cfemail="374442474758454377445b5252475b5e595c1954585a">[email&#160;protected]</span></a>
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-phone-alt mr-2 text-indigo-400"></i>
@@ -1042,7 +1069,7 @@
             
             <div class="mt-10 pt-6 border-t border-indigo-900 flex flex-col md:flex-row justify-between items-center">
                 <div class="text-indigo-400 text-sm mb-4 md:mb-0" data-i18n="landing.footer.copyright">
-                    © 2023 SleepLink. 保留所有权利。
+                    &copy; 2023 SleepLink. 保留所有权利。
                 </div>
                 <div class="flex items-center">
                     <span class="text-indigo-400 mr-4" data-i18n="landing.footer.language">语言:</span>
@@ -1085,7 +1112,7 @@
             
             // 切换应用截图标签
             const tabButtons = document.querySelectorAll('.tab-nav button');
-            const appScreen = document.getElementById('app-screen');
+            const appScreen = document.querySelector('.phone-screen img');
             
             tabButtons.forEach(button => {
                 button.addEventListener('click', function() {
@@ -1099,15 +1126,17 @@
                     this.classList.remove('bg-opacity-20', 'bg-white');
                     this.classList.add('bg-purple-600');
                     
-                    // 切换iframe源
+                    // 切换图片源
                     const screen = this.getAttribute('data-screen');
-                    appScreen.src = `${screen}.html`;
+                    const imageMap = {
+                        'match-interface': 'match-interface.html',
+                        'virtual-room': 'virtual-room.html',
+                        'profile': 'profile.html',
+                        'voice-capsule': 'voice-capsule.html'
+                    };
+                    appScreen.src = imageMap[screen] || imageMap['match-interface'];
                 });
             });
-            
-            // 设置默认活跃标签
-            tabButtons[0].classList.remove('bg-opacity-20', 'bg-white');
-            tabButtons[0].classList.add('bg-purple-600');
             
             // 处理语言切换
             const languageSelector = document.getElementById('language-selector');
